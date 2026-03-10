@@ -349,6 +349,20 @@
     .story-section {
       max-width: 640px;
       text-align: left;
+      position: relative;
+    }
+
+    .story-sticker {
+      display: inline-block;
+      height: 3em;
+      width: auto;
+      vertical-align: middle;
+      margin: -1em 2px -0.6em 5px;
+      position: relative;
+      top: -4px;
+      transform: rotate(8deg);
+      pointer-events: none;
+
     }
 
     .story-section p {
@@ -525,11 +539,13 @@
        ============================================ */
     @media (max-width: 640px) {
       .level { min-height: 100svh; }
-      .stat-row { gap: 24px; }
-      .stat-val { font-size: 22px; }
+      .stat-row { gap: 16px 24px; flex-wrap: nowrap; }
+      .stat-val { font-size: 20px; }
+      .stat-label { font-size: 9px; letter-spacing: 1.5px; }
       .portal-btn { padding: 18px 40px; font-size: 14px; }
       .interlude { padding: 80px 20px; }
       .level-overlay { padding: 32px 20px; }
+      .story-sticker { height: 2.2em; margin: -0.7em 2px -0.4em 4px; top: -3px; }
     }
   </style>
 </head>
@@ -547,7 +563,7 @@
       <span class="banana-word">Vibes</span>
     </h1>
     <p class="hero-sub reveal reveal-d2">
-      A banana painted with watercolors at a kitchen table, that somehow became this.
+      A banana painted with watercolors that accidentally transcended into something else entirely.
     </p>
     <img src="banana_hand.png" alt="The banana, held" class="hero-hand-img reveal reveal-d3" />
   </div>
@@ -563,16 +579,16 @@
 <section class="interlude">
   <div class="interlude-inner story-section">
     <p class="reveal">One night I got bored and painted a <span class="pop">banana</span> with watercolors at my kitchen table.</p>
-    <p class="reveal">I peeled a sticker off a real banana and stuck it on the painting then I cut the banana out of the watercolor paper that I painted it on and taped it to my refrigerator where it has lived every since.</p>
-    <p class="reveal">Then one night I got bored again and decided to feed my banana into a <span class="mono">LLM</span> to see what would happen.</p>
+    <p class="reveal">I peeled a <img src="banana_sticker.png" alt="sticker" class="story-sticker" draggable="false" /> off a real banana and stuck it on the painting then I cut the banana out of the watercolor paper that I painted it on and taped it to my refrigerator where it has lived every since.</p>
+    <p class="reveal">Then one night I got bored again and decided to feed my banana into an <span class="mono">LLM</span> to see what would happen.</p>
     <p class="story-beat reveal">The results were astonishing&hellip;</p>
     <p class="reveal">What started as an innocent brush stroke at my kitchen table suddenly multiplied into <span class="pop">exponential banana chaos</span>.</p>
-    <p class="reveal">Hundreds of bananas&mdash;spinning, jittering, melting, wobbling, <em>leaping</em> through the air.</p>
+    <p class="reveal">Hundreds of bananas&mdash;spinning, jittering, stretching, wobbling, <em>leaping</em> through the air.</p>
     <p class="reveal">Bananas that <span class="mono">undulate</span>, <span class="mono">oscillate</span>, <span class="mono">pulsate</span> and squish with <span class="mono">sine-based scaling</span>.</p>
-    <p class="reveal">It was as though I had slipped on a proverbial banana peel and fallen into some sort of <span class="pop">alternate banana universe</span>.</p>
+    <p class="reveal">It was as though I had slipped on a proverbial banana peel and stumbled into some sort of an <span class="pop">alternate banana realm</span>.</p>
     <p class="reveal">Time faded into hours long conversation about <span class="mono">trick logic</span>, <span class="mono">event triggers</span>, <span class="mono">bounce physics</span>, <span class="mono">elastic collisions</span>, <span class="mono">friction damping</span>, <span class="mono">gravity</span> and <span class="mono">lateral drift simulation</span>.</p>
     <p class="reveal"><strong><em>My god!</em></strong> Some bananas even became <span class="pop">hero jumpers</span> with boosted <span class="mono">super-arc acrobatic energy</span> that have a <span class="mono">3% chance per frame</span> of launching across the screen based on their <em>cooldown</em> state.</p>
-    <p class="big reveal" style="text-align: center; margin-top: 40px;">These are the banana <span style="color: var(--banana);">vibes</span>...</p>
+    <p class="big reveal" style="text-align: center; margin-top: 40px; margin-bottom: -20px;">These are the <span style="color: var(--banana);">banana</span> vibes...</p>
   </div>
 </section>
 
@@ -627,7 +643,7 @@
     <h2 class="level-title reveal reveal-d1">Jitter</h2>
     <p class="level-desc reveal reveal-d2">
       Each banana oscillates with noise-injected jitter. They never settle.
-      They never rest. <em>They are alive and they are frantic and they are bananas.</em>
+      They never rest. <em>They are alive and they are frantic and they are a very high strung bunch.</em>
     </p>
     <div class="stat-row reveal reveal-d3">
       <div class="stat"><div class="stat-val">&plusmn;45&deg;</div><div class="stat-label">Amplitude</div></div>
@@ -648,7 +664,7 @@
     <p class="level-desc reveal reveal-d2">
       Sine-based scaling on both axes simultaneously. The bananas breathe. They
       pulsate. They squish and bulge with a rhythm that can only be described as
-      <em>deeply uncomfortable and yet impossible to look away from.</em>
+      <em>deeply unsettling and yet impossible to look away from.</em>
     </p>
     <div class="stat-row reveal reveal-d3">
       <div class="stat"><div class="stat-val">0.2x</div><div class="stat-label">Min Scale</div></div>
@@ -671,7 +687,7 @@
       Full physics simulation. Bananas launch from the ground, bounce off walls,
       perform mid-air trick flips. 8% are designated <strong>hero jumpers</strong>&mdash;elite bananas
       with boosted super-arc acrobatic energy and a <em>3% chance per frame</em>
-      of launching across the entire screen.
+      of launching across your entire screen.
     </p>
     <div class="stat-row reveal reveal-d3">
       <div class="stat"><div class="stat-val">0.5g</div><div class="stat-label">Gravity</div></div>
@@ -692,7 +708,7 @@
     <p class="level-desc reveal reveal-d2">
       A banana tree. Spring-damper physics with turbulence modeling,
       per-banana airiness coefficients, flutter amplitude, and wind gusts
-      that decay exponentially. <em>Each banana sways to its own filtered noise lane.</em>
+      that decay exponentially. <em>Each banana sways to its own filtered noise lane and cannot be bothered to care.</em>
     </p>
     <div class="stat-row reveal reveal-d3">
       <div class="stat"><div class="stat-val">2</div><div class="stat-label">Noise Lanes</div></div>
