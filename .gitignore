@@ -1,0 +1,14 @@
+.DS_Store
+.replit
+
+# Unused old pages
+gallery.html
+tech.html
+story.html
+
+# Original uncompressed video
+bananavid.mov
+
+# Source images not used on the site
+banana-closeup.webp
+banana-kitchen.webp

@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Banana Vibes</title>
+  <meta name="author" content="Owen Seay" />
+  <meta name="copyright" content="© 2024 Owen Seay. All rights reserved." />
+  <meta name="description" content="A website dedicated to a single banana, painted with watercolors at a kitchen table, that somehow became this." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fredoka:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #FAFAFA;
+      --dark: #111;
+      --ink: #1a1a1a;
+      --ink-sub: #666;
+      --banana: #F5C518;
+      --banana-deep: #E0A800;
+      --banana-soft: #FFF3A0;
+      --green: #6EBE44;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============================================
+       LEVEL SECTIONS
+       ============================================ */
+    .level {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .level canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .level canvas.fade-out {
+      opacity: 0;
+    }
+
+    .level-overlay {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 40px 24px;
+      max-width: 800px;
+    }
+
+    .level-overlay::before {
+      content: '';
+      position: absolute;
+      inset: -80px -120px;
+      background: radial-gradient(ellipse, rgba(255,255,255,0.9) 20%, rgba(255,255,255,0.6) 40%, rgba(255,255,255,0.2) 60%, transparent 75%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* ============================================
+       HERO
+       ============================================ */
+    .hero-section {
+      min-height: 100vh;
+    }
+
+    .hero-section .level-overlay::before {
+      background: radial-gradient(ellipse, rgba(255,255,255,0.75) 15%, rgba(255,255,255,0.3) 50%, transparent 75%);
+    }
+
+    .hero-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--banana-deep);
+      opacity: 0.8;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(52px, 10vw, 110px);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+      color: var(--ink);
+    }
+
+    .hero-title .banana-word {
+      color: var(--banana);
+      display: block;
+      font-size: 1.15em;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--ink-sub);
+      font-weight: 400;
+      max-width: 460px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      animation: bob 2s ease-in-out infinite;
+    }
+
+    .scroll-cue span {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.25);
+    }
+
+    .scroll-cue .chevron {
+      width: 16px;
+      height: 16px;
+      border-right: 2px solid rgba(0,0,0,0.25);
+      border-bottom: 2px solid rgba(0,0,0,0.25);
+      transform: rotate(45deg);
+    }
+
+    @keyframes bob {
+      0%, 100% { bottom: 28px; opacity: 0.5; }
+      50% { bottom: 20px; opacity: 1; }
+    }
+
+    /* ============================================
+       LEVEL HEADERS / TEXT
+       ============================================ */
+    .level-number {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--banana-deep);
+      opacity: 0.7;
+      margin-bottom: 14px;
+    }
+
+    .level-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 18px;
+      letter-spacing: -1px;
+      color: var(--ink);
+    }
+
+    .level-desc {
+      font-size: 17px;
+      color: var(--ink-sub);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .level-desc em {
+      color: var(--banana-deep);
+      font-style: italic;
+    }
+
+    .level-desc strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-val {
+      font-family: 'Space Mono', monospace;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--banana-deep);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(0,0,0,0.35);
+      margin-top: 4px;
+    }
+
+    /* ============================================
+       ORIGIN INTERLUDE
+       ============================================ */
+    .interlude {
+      position: relative;
+      padding: 100px 24px;
+      text-align: center;
+      background: var(--bg-soft);
+      border-top: 1px solid rgba(0,0,0,0.06);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .interlude-inner {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .interlude p {
+      font-size: 19px;
+      color: var(--ink-sub);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .interlude p.big {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(26px, 4vw, 38px);
+      color: var(--ink);
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 28px;
+    }
+
+    .interlude p.whisper {
+      font-size: 15px;
+      color: rgba(0,0,0,0.35);
+      font-style: italic;
+    }
+
+    .banana-hero-img {
+      width: 200px;
+      max-width: 50vw;
+      border-radius: 12px;
+      margin: 32px auto;
+      display: block;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      padding: 120px 24px;
+      text-align: center;
+      position: relative;
+      background: var(--bg-soft);
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(40px, 7vw, 72px);
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.05;
+      color: var(--ink);
+    }
+
+    .cta-section .cta-sub {
+      color: var(--ink-sub);
+      font-size: 16px;
+      margin-bottom: 40px;
+    }
+
+    .portal-btn {
+      display: inline-block;
+      padding: 20px 56px;
+      background: var(--banana);
+      color: var(--dark);
+      font-size: 16px;
+      font-weight: 800;
+      text-decoration: none;
+      border-radius: 60px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      box-shadow: 0 8px 30px rgba(245,197,24,0.3);
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .portal-btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 12px 40px rgba(245,197,24,0.4);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    footer {
+      padding: 40px 24px 48px;
+      text-align: center;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      background: var(--bg);
+    }
+
+    footer p {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: rgba(0,0,0,0.25);
+      letter-spacing: 2px;
+    }
+
+    /* ============================================
+       STORY SECTION
+       ============================================ */
+    .story-section {
+      max-width: 640px;
+      text-align: left;
+    }
+
+    .story-section p {
+      font-size: 19px;
+      line-height: 1.85;
+      margin-bottom: 24px;
+    }
+
+    .story-section p.story-beat {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.35;
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .story-section p.story-shout {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 700;
+      color: #2E8B57;
+      font-style: italic;
+      text-align: center;
+      margin: 44px 0;
+      letter-spacing: -1px;
+    }
+
+    .story-section .mono {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.88em;
+      color: var(--ink);
+      background: var(--banana-soft);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .story-section .pop {
+      color: var(--banana-deep);
+      font-weight: 700;
+    }
+
+    /* ============================================
+       HERO BANANA CARD — hand + placard inside hero
+       ============================================ */
+    .hero-content {
+      max-width: 900px;
+    }
+
+    .hero-banana-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .hero-hand-img {
+      width: 240px;
+      max-width: 45vw;
+      display: block;
+      margin: 36px auto 0;
+    }
+
+    .placard {
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(0,0,0,0.08);
+      padding: 32px 36px;
+      text-align: left;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      max-width: 320px;
+    }
+
+    .placard-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 14px;
+      letter-spacing: -0.5px;
+    }
+
+    .placard-details {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--ink-sub);
+      line-height: 2.2;
+    }
+
+    .placard-details span {
+      display: block;
+    }
+
+    .placard-note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: rgba(0,0,0,0.35);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 640px) {
+      .hero-banana-card { gap: 24px; margin-top: 32px; }
+      .hero-hand-img { width: 160px; }
+      .placard { padding: 24px 24px; }
+    }
+
+    /* ============================================
+       TESTIMONY SECTION
+       ============================================ */
+    .testimony-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--banana);
+      border: none;
+      cursor: pointer;
+      font-size: 52px;
+      line-height: 1;
+      margin: 0 auto;
+      box-shadow: 0 6px 28px rgba(245,197,24,0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .testimony-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 36px rgba(245,197,24,0.45);
+    }
+
+    .testimony-btn.playing {
+      animation: testimonyPulse 0.5s ease-in-out;
+    }
+
+    @keyframes testimonyPulse {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.2) rotate(-10deg); }
+      60% { transform: scale(0.95) rotate(5deg); }
+      100% { transform: scale(1) rotate(0); }
+    }
+
+    .testimony-hint {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: rgba(0,0,0,0.25);
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    /* ============================================
+       SCROLL ANIMATIONS
+       ============================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.35s; }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 640px) {
+      .level { min-height: 100svh; }
+      .stat-row { gap: 24px; }
+      .stat-val { font-size: 22px; }
+      .portal-btn { padding: 18px 40px; font-size: 14px; }
+      .interlude { padding: 80px 20px; }
+      .level-overlay { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================================================================
+     HERO — BREEZE ANIMATION
+     ================================================================ -->
+<section class="level hero-section" data-effect="breeze">
+  <canvas></canvas>
+  <div class="level-overlay hero-content">
+    <p class="hero-label reveal">Now loading</p>
+    <h1 class="hero-title reveal reveal-d1">
+      Banana
+      <span class="banana-word">Vibes</span>
+    </h1>
+    <p class="hero-sub reveal reveal-d2">
+      A banana painted with watercolors at a kitchen table, that somehow became this.
+    </p>
+    <img src="banana_hand.png" alt="The banana, held" class="hero-hand-img reveal reveal-d3" />
+  </div>
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <div class="chevron"></div>
+  </div>
+</section>
+
+<!-- ================================================================
+     THE STORY
+     ================================================================ -->
+<section class="interlude">
+  <div class="interlude-inner story-section">
+    <p class="reveal">One night I got bored and painted a <span class="pop">banana</span> with watercolors at my kitchen table.</p>
+    <p class="reveal">I peeled a sticker off a real banana and stuck it on the painting then I cut the banana out of the watercolor paper that I painted it on and taped it to my refrigerator where it has lived every since.</p>
+    <p class="reveal">Then one night I got bored again and decided to feed my banana into a <span class="mono">LLM</span> to see what would happen.</p>
+    <p class="story-beat reveal">The results were astonishing&hellip;</p>
+    <p class="reveal">What started as an innocent brush stroke at my kitchen table suddenly multiplied into <span class="pop">exponential banana chaos</span>.</p>
+    <p class="reveal">Hundreds of bananas&mdash;spinning, jittering, melting, wobbling, <em>leaping</em> through the air.</p>
+    <p class="reveal">Bananas that <span class="mono">undulate</span>, <span class="mono">oscillate</span>, <span class="mono">pulsate</span> and squish with <span class="mono">sine-based scaling</span>.</p>
+    <p class="reveal">It was as though I had slipped on a proverbial banana peel and fallen into some sort of <span class="pop">alternate banana universe</span>.</p>
+    <p class="reveal">Time faded into hours long conversation about <span class="mono">trick logic</span>, <span class="mono">event triggers</span>, <span class="mono">bounce physics</span>, <span class="mono">elastic collisions</span>, <span class="mono">friction damping</span>, <span class="mono">gravity</span> and <span class="mono">lateral drift simulation</span>.</p>
+    <p class="reveal"><strong><em>My god!</em></strong> Some bananas even became <span class="pop">hero jumpers</span> with boosted <span class="mono">super-arc acrobatic energy</span> that have a <span class="mono">3% chance per frame</span> of launching across the screen based on their <em>cooldown</em> state.</p>
+    <p class="big reveal" style="text-align: center; margin-top: 40px;">These are the banana <span style="color: var(--banana);">vibes</span>...</p>
+  </div>
+</section>
+
+<!-- ================================================================
+     LEVEL 1: DRIFT
+     ================================================================ -->
+<section class="level" data-effect="drift">
+  <canvas></canvas>
+  <div class="level-overlay">
+    <p class="level-number reveal">Vibe 01</p>
+    <h2 class="level-title reveal reveal-d1">Drift</h2>
+    <p class="level-desc reveal reveal-d2">
+      247 bananas suspended in space. Each one floats on its own sinusoidal path,
+      gently rocking, answering to no one. <em>Quiet. Meditative. Completely unnecessary.</em>
+    </p>
+    <div class="stat-row reveal reveal-d3">
+      <div class="stat"><div class="stat-val">247</div><div class="stat-label">Bananas</div></div>
+      <div class="stat"><div class="stat-val">&infin;</div><div class="stat-label">Duration</div></div>
+      <div class="stat"><div class="stat-val">0</div><div class="stat-label">Purpose</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     LEVEL 2: SPIN
+     ================================================================ -->
+<section class="level" data-effect="spin">
+  <canvas></canvas>
+  <div class="level-overlay">
+    <p class="level-number reveal">Vibe 02</p>
+    <h2 class="level-title reveal reveal-d1">Spin</h2>
+    <p class="level-desc reveal reveal-d2">
+      Some rotate at a constant velocity. Others accelerate in random bursts,
+      achieving centrifugal forces that no fruit should ever attempt.
+      <em>Science has gone too far. Science hasn't gone far enough.</em>
+    </p>
+    <div class="stat-row reveal reveal-d3">
+      <div class="stat"><div class="stat-val">360&deg;</div><div class="stat-label">Per Cycle</div></div>
+      <div class="stat"><div class="stat-val">1000+</div><div class="stat-label">RPM Peak</div></div>
+      <div class="stat"><div class="stat-val">20%</div><div class="stat-label">Constant Spinners</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     LEVEL 3: WOBBLE
+     ================================================================ -->
+<section class="level" data-effect="wobble">
+  <canvas></canvas>
+  <div class="level-overlay">
+    <p class="level-number reveal">Vibe 03</p>
+    <h2 class="level-title reveal reveal-d1">Jitter</h2>
+    <p class="level-desc reveal reveal-d2">
+      Each banana oscillates with noise-injected jitter. They never settle.
+      They never rest. <em>They are alive and they are frantic and they are bananas.</em>
+    </p>
+    <div class="stat-row reveal reveal-d3">
+      <div class="stat"><div class="stat-val">&plusmn;45&deg;</div><div class="stat-label">Amplitude</div></div>
+      <div class="stat"><div class="stat-val">10px</div><div class="stat-label">Noise Range</div></div>
+      <div class="stat"><div class="stat-val">100%</div><div class="stat-label">Restless</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     LEVEL 4: STRETCH
+     ================================================================ -->
+<section class="level" data-effect="stretch">
+  <canvas></canvas>
+  <div class="level-overlay">
+    <p class="level-number reveal">Vibe 04</p>
+    <h2 class="level-title reveal reveal-d1">Stretch</h2>
+    <p class="level-desc reveal reveal-d2">
+      Sine-based scaling on both axes simultaneously. The bananas breathe. They
+      pulsate. They squish and bulge with a rhythm that can only be described as
+      <em>deeply uncomfortable and yet impossible to look away from.</em>
+    </p>
+    <div class="stat-row reveal reveal-d3">
+      <div class="stat"><div class="stat-val">0.2x</div><div class="stat-label">Min Scale</div></div>
+      <div class="stat"><div class="stat-val">1.8x</div><div class="stat-label">Max Scale</div></div>
+      <div class="stat"><div class="stat-val">2</div><div class="stat-label">Axes</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================
+     LEVEL 5: POPCORN
+     ================================================================ -->
+<section class="level" data-effect="popcorn">
+  <canvas></canvas>
+  <div class="level-overlay">
+    <p class="level-number reveal">Vibe 05</p>
+    <h2 class="level-title reveal reveal-d1">Bounce</h2>
+    <p class="level-desc reveal reveal-d2">
+      Full physics simulation. Bananas launch from the ground, bounce off walls,
+      perform mid-air trick flips. 8% are designated <strong>hero jumpers</strong>&mdash;elite bananas
+      with boosted super-arc acrobatic energy and a <em>3% chance per frame</em>
+      of launching across the entire screen.
+    </p>
+    <div class="stat-row reveal reveal-d3">
+      <div class="stat"><div class="stat-val">0.5g</div><div class="stat-label">Gravity</div></div>
+      <div class="stat"><div class="stat-val">8%</div><div class="stat-label">Hero Jumpers</div></div>
+      <div class="stat"><div class="stat-val">3%</div><div class="stat-label">Launch Chance</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     LEVEL 6: BREEZE
+     ================================================================ -->
+<section class="level" data-effect="breeze">
+  <canvas></canvas>
+  <div class="level-overlay">
+    <p class="level-number reveal">Vibe 06</p>
+    <h2 class="level-title reveal reveal-d1">Breeze</h2>
+    <p class="level-desc reveal reveal-d2">
+      A banana tree. Spring-damper physics with turbulence modeling,
+      per-banana airiness coefficients, flutter amplitude, and wind gusts
+      that decay exponentially. <em>Each banana sways to its own filtered noise lane.</em>
+    </p>
+    <div class="stat-row reveal reveal-d3">
+      <div class="stat"><div class="stat-val">2</div><div class="stat-label">Noise Lanes</div></div>
+      <div class="stat"><div class="stat-val">0.96</div><div class="stat-label">Gust Decay</div></div>
+      <div class="stat"><div class="stat-val">&plusmn;40&deg;</div><div class="stat-label">Swing Limit</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     TESTIMONIALS CAROUSEL — "This is bananas"
+     ================================================================ -->
+<section class="interlude testimonial-section">
+  <div class="interlude-inner">
+    <p class="big reveal" style="margin-bottom: 40px;">Testimonials from real people that this is in fact bananas</p>
+    <button class="testimony-btn reveal reveal-d1" id="testimonyBtn">&#127820;</button>
+    <p class="testimony-hint reveal reveal-d2">tap the banana</p>
+  </div>
+</section>
+
+
+<!-- ================================================================
+     FOOTER
+     ================================================================ -->
+<footer>
+  <p>This is bananas.</p>
+</footer>
+
+
+<!-- ================================================================
+     ANIMATION ENGINE
+     ================================================================ -->
+<script>
+(function() {
+
+  const bananaImg = new Image();
+  bananaImg.src = 'banana.png';
+
+  const BANANA_COUNT = 247; // the sacred number
+
+  // ---- Pre-rendered size cache ----
+  // Scale the banana ONCE per size with high-quality smoothing,
+  // then draw those smooth versions with smoothing OFF = fast + crisp
+  const sizeCache = new Map();
+  function getScaledBanana(size) {
+    const key = Math.round(size / 8) * 8; // bucket to nearest 8px
+    if (sizeCache.has(key)) return sizeCache.get(key);
+    const off = document.createElement('canvas');
+    off.width = key;
+    off.height = key;
+    const octx = off.getContext('2d');
+    octx.imageSmoothingEnabled = true;
+    octx.imageSmoothingQuality = 'high';
+    octx.drawImage(bananaImg, 0, 0, key, key);
+    sizeCache.set(key, off);
+    return off;
+  }
+
+  // ---- Banana class ----
+  class Banana {
+    constructor(w, h) {
+      this.reset(w, h);
+    }
+    reset(w, h) {
+      this.baseX = Math.random() * w;
+      this.baseY = Math.random() * h;
+      this.size = Math.random() * 150 + 60;
+      this.offsetX = Math.random() * Math.PI * 2;
+      this.offsetY = Math.random() * Math.PI * 2;
+      this.driftX = Math.random() * 40 + 10;
+      this.driftY = Math.random() * 40 + 10;
+      this.angle = Math.random() * 360;
+      this.rotationSpeed = Math.random() * 0.03 + 0.005;
+      this.rotationAmplitude = Math.random() * 45 + 5;
+      this.phase = Math.random() * Math.PI * 2;
+      this.spinStyle = Math.random() < 0.2 ? 'constant' : 'dynamic';
+      this.spinRate = Math.random() * 10 + 5;
+      this.spinBoost = 0;
+      this.scaleX = 1;
+      this.scaleY = 1;
+      this.x = this.baseX;
+      this.y = this.baseY;
+      this.vy = 0;
+      this.vx = 0;
+      this.gravity = 0.5 + Math.random() * 0.05;
+      this.bounceEnergy = 0;
+      this.maxBounceEnergy = 15 + Math.random() * 10;
+      this.popDelay = Math.random() * 5000;
+      this.dropStartTime = 0;
+      this.hasPopped = false;
+      this.isTricking = false;
+      this.trickTimer = 0;
+      this.heroJump = Math.random() < 0.08;
+      this.maxVX = this.heroJump ? 12 + Math.random() * 4 : 6 + Math.random() * 3;
+      this.heroCooldown = 2000 + Math.random() * 3000;
+      this.lastHeroJump = 0;
+      this.stemX = 0;
+      this.stemY = 0;
+      this.length = 0;
+      this.angularVel = 0;
+      this.restAngle = (Math.random() - 0.5) * 6;
+      this.restDrift = 0;
+      this.kBase = 0.016 + Math.random() * 0.02;
+      this.dBase = 0.08 + Math.random() * 0.10;
+      this.response = 0.02 + Math.random() * 0.03;
+      this.targetFiltered = 0;
+      this.noise1 = 0;
+      this.noise2 = 0;
+      this.nRate1 = 0.25 + Math.random() * 0.45;
+      this.nRate2 = 0.60 + Math.random() * 0.90;
+      this.nPhase1 = Math.random() * Math.PI * 2;
+      this.nPhase2 = Math.random() * Math.PI * 2;
+      this.airinessDeg = 6 + Math.random() * 10;
+      this.flutterAmt = 0.12 + Math.random() * 1.2;
+      this.maxAngle = 28 + Math.random() * 12;
+      this.sensitivity = 0.7 + Math.random() * 0.9;
+    }
+  }
+
+  // ---- Per-section state ----
+  const sections = document.querySelectorAll('.level[data-effect]');
+  const sectionData = [];
+  let activeSection = null; // ONLY ONE section renders at a time
+
+  sections.forEach(sec => {
+    const canvas = sec.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    const effect = sec.dataset.effect;
+    const bananas = [];
+    for (let i = 0; i < BANANA_COUNT; i++) {
+      bananas.push(new Banana(1, 1));
+    }
+    sectionData.push({ sec, canvas, ctx, effect, bananas, ratio: 0, initialized: false, windStrength: 0, windGust: 0 });
+  });
+
+  // ---- Resize only one section ----
+  function resizeSection(d) {
+    const rect = d.sec.getBoundingClientRect();
+    d.canvas.width = rect.width;
+    d.canvas.height = rect.height;
+    d.canvas.style.width = rect.width + 'px';
+    d.canvas.style.height = rect.height + 'px';
+    d.ctx.imageSmoothingEnabled = false; // smoothing baked into pre-rendered cache
+    d.w = rect.width;
+    d.h = rect.height;
+  }
+
+  // ---- Initialize bananas for a given effect ----
+  function initEffect(d) {
+    if (d.initialized) return;
+    d.initialized = true;
+    const w = d.w, h = d.h;
+    const now = performance.now();
+    d.bananas.forEach(b => {
+      b.reset(w, h);
+      b.x = Math.random() * w;
+      b.y = Math.random() * h;
+      b.baseX = b.x;
+      b.baseY = b.y;
+
+      if (d.effect === 'popcorn') {
+        b.y = h - b.size / 2;
+        b.vy = 0;
+        b.bounceEnergy = 0;
+        b.hasPopped = false;
+        b.dropStartTime = now;
+        b.lastHeroJump = now;
+      }
+      if (d.effect === 'breeze') {
+        b.stemX = Math.random() * w;
+        b.stemY = 10 + Math.random() * (h * 0.30);
+        b.length = b.size * (0.55 + Math.random() * 0.15);
+        b.angle = (Math.random() - 0.5) * 10;
+        b.angularVel = 0;
+        b.x = b.stemX;
+        b.y = b.stemY + b.length;
+      }
+    });
+  }
+
+  // ---- Update functions per effect ----
+  function updateDrift(b, t, w, h) {
+    const time = t * 0.003 + b.phase;
+    b.x = b.baseX + Math.sin(time + b.offsetX) * b.driftX + Math.cos(time / 3) * 5;
+    b.y = b.baseY + Math.sin(time + b.offsetY) * b.driftY + Math.sin(time / 3) * 5;
+    b.angle = Math.sin(time * b.rotationSpeed) * (b.rotationAmplitude * 0.2);
+  }
+
+  function updateSpin(b, now) {
+    if (b.spinStyle === 'constant') {
+      b.angle += b.spinRate;
+    } else {
+      if (Math.random() < 0.005 && b.spinBoost < 1000) b.spinBoost = 1000 + Math.random() * 1000;
+      if (b.spinBoost > 0) b.spinBoost *= 0.96;
+      const baseSpin = 360 * (1 + 0.5 * Math.sin(now / 300 + b.phase));
+      b.angle += b.rotationSpeed * (baseSpin + b.spinBoost);
+    }
+  }
+
+  function updateWobble(b, t) {
+    const noise = (Math.random() - 0.5) * 10;
+    b.angle = Math.sin(t * 0.003 * b.rotationSpeed * 10 + b.phase) * (b.rotationAmplitude * 0.5) + noise;
+  }
+
+  function updateStretch(b, now) {
+    b.scaleX = 1 + 0.8 * Math.sin(now / 600 + b.phase);
+    b.scaleY = 1 + 0.8 * Math.cos(now / 600 + b.phase);
+  }
+
+  function updatePopcorn(b, now, w, h) {
+    if (!b.hasPopped && now - b.dropStartTime > b.popDelay) {
+      b.hasPopped = true;
+      b.bounceEnergy = b.heroJump ? 18 + Math.random() * 10 : 5 + Math.random() * 10;
+      b.vx = (Math.random() - 0.5) * (b.heroJump ? 18 : 8);
+      b.vy = -b.bounceEnergy * (0.9 + Math.random() * 0.2);
+    }
+    if (b.hasPopped) {
+      b.vy += b.gravity;
+      b.x += b.vx;
+      b.y += b.vy;
+      if (b.x - b.size/2 < 0 || b.x + b.size/2 > w) b.vx *= b.heroJump ? -0.9 : -0.5;
+      const floorY = h - 10;
+      if (b.y + b.size/2 >= floorY) {
+        b.y = floorY - b.size/2;
+        b.vy = -b.bounceEnergy;
+        b.vx += (Math.random() - 0.5) * (b.heroJump ? 1.2 : 2.0);
+        if (Math.abs(b.vx) > b.maxVX) b.vx = b.maxVX * Math.sign(b.vx);
+        b.bounceEnergy += b.heroJump ? 1.2 + Math.random() * 0.5 : 0.3 + Math.random() * 0.3;
+        if (b.bounceEnergy > b.maxBounceEnergy) b.bounceEnergy = b.maxBounceEnergy;
+        if ((b.heroJump && Math.random() < 0.7) || Math.random() < 0.3) {
+          b.isTricking = true;
+          b.trickTimer = 20 + Math.random() * 30;
+        }
+        if (b.heroJump && now - b.lastHeroJump > b.heroCooldown && Math.random() < 0.03) {
+          const superArc = Math.random() < 0.2;
+          b.bounceEnergy = superArc ? 18 + Math.random() * 4 : 12 + Math.random() * 3;
+          b.vx = (Math.random() - 0.5) * (superArc ? 24 : 14);
+          b.vy = -b.bounceEnergy * (0.85 + Math.random() * 0.15);
+          b.lastHeroJump = now;
+          b.heroCooldown = 2500 + Math.random() * 4000;
+          b.isTricking = true;
+          b.trickTimer = 40 + Math.random() * 30;
+        }
+      }
+      if (b.isTricking) { b.angle += b.heroJump ? 6 : 4; b.trickTimer--; if (b.trickTimer <= 0) b.isTricking = false; }
+      else { b.angle += b.heroJump ? 1.2 : 0.5; }
+    }
+  }
+
+  function updateBreeze(b, waveTime, windStrength) {
+    const baseLean = (windStrength * 8) * b.sensitivity;
+    b.restDrift = b.restDrift * 0.985 + (Math.random() - 0.5) * 0.012;
+    b.restAngle = Math.max(-18, Math.min(18, b.restAngle + b.restDrift));
+    const tt = waveTime;
+    const s1 = Math.sin(b.nPhase1 + tt * b.nRate1 * Math.PI * 2);
+    const s2 = Math.sin(b.nPhase2 + tt * b.nRate2 * Math.PI * 2);
+    b.noise1 = b.noise1 * 0.92 + s1 * 0.08;
+    b.noise2 = b.noise2 * 0.92 + s2 * 0.08;
+    const turbulence = (b.noise1 + 0.7 * b.noise2) * b.airinessDeg;
+    const flutter = Math.sin(tt * 6.0 + b.stemX * 0.01) * b.flutterAmt * 0.3;
+    const rawTarget = baseLean + b.restAngle + turbulence + flutter;
+    b.targetFiltered += b.response * (rawTarget - b.targetFiltered);
+    const diff = b.targetFiltered - b.angle;
+    b.angularVel += (b.kBase * diff - b.dBase * b.angularVel);
+    if (Math.random() < 0.002) b.angularVel += (Math.random() - 0.5) * 0.12 * (1 + Math.abs(windStrength));
+    b.angularVel += (Math.random() - 0.5) * 0.0012;
+    b.angle += b.angularVel;
+    if (b.angle > b.maxAngle) { b.angle = b.maxAngle; b.angularVel *= 0.7; }
+    if (b.angle < -b.maxAngle) { b.angle = -b.maxAngle; b.angularVel *= 0.7; }
+    const L = b.length || (b.size * 0.6);
+    const a = b.angle * Math.PI / 180;
+    b.x = b.stemX + Math.sin(a) * L;
+    b.y = b.stemY + Math.cos(a) * L;
+  }
+
+  // ---- Draw (uses pre-scaled cache, smoothing OFF for speed) ----
+  function drawBanana(ctx, b, effect) {
+    if (!bananaImg.complete) return;
+    const s = b.size;
+    const img = getScaledBanana(s); // pre-smoothed at this size
+    const w = img.width, h = img.height;
+
+    if (effect === 'breeze') {
+      ctx.save();
+      ctx.translate(b.stemX, b.stemY);
+      ctx.rotate(b.angle * Math.PI / 180);
+      ctx.drawImage(img, -w/2, 0);
+      ctx.restore();
+      return;
+    }
+
+    ctx.save();
+    ctx.translate(b.x, b.y);
+    ctx.rotate(b.angle * Math.PI / 180);
+    let sx = 1, sy = 1;
+    if (effect === 'stretch') { sx = b.scaleX || 1; sy = b.scaleY || 1; }
+    else if (effect === 'popcorn' && Math.abs(b.vy) > 5) {
+      if (b.vy > 0) { sx = 1.2; sy = 0.8; } else { sx = 0.8; sy = 1.2; }
+    }
+    ctx.scale(sx, sy);
+    ctx.drawImage(img, -w/2, -h/2);
+    ctx.restore();
+  }
+
+  // ---- Visibility observer: track which section is MOST visible ----
+  const visObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const d = sectionData.find(sd => sd.sec === e.target);
+      if (d) d.ratio = e.isIntersecting ? e.intersectionRatio : 0;
+    });
+    // Pick the single most-visible section
+    let best = null;
+    let bestRatio = 0;
+    sectionData.forEach(d => {
+      if (d.ratio > bestRatio) { best = d; bestRatio = d.ratio; }
+    });
+    // Smooth transition: fade out old canvas, fade in new one
+    if (activeSection && activeSection !== best) {
+      const leaving = activeSection;
+      leaving.canvas.classList.add('fade-out');
+      // Clear the canvas after the CSS fade completes
+      setTimeout(() => {
+        leaving.ctx.clearRect(0, 0, leaving.w || 0, leaving.h || 0);
+      }, 600);
+    }
+    if (best && best !== activeSection) {
+      best.canvas.classList.remove('fade-out');
+    }
+    activeSection = best;
+  }, { threshold: [0, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0] });
+  sectionData.forEach(d => visObs.observe(d.sec));
+
+  // ---- Main loop: only render activeSection ----
+  function frame(t) {
+    requestAnimationFrame(frame);
+    const d = activeSection;
+    if (!d || !bananaImg.complete) return;
+
+    if (!d.initialized) { resizeSection(d); initEffect(d); }
+
+    const ctx = d.ctx;
+    const w = d.w, h = d.h;
+    const now = performance.now();
+    const waveTime = now * 0.001;
+    ctx.clearRect(0, 0, w, h);
+
+    // Wind for breeze
+    if (d.effect === 'breeze') {
+      const base = 0.18 * Math.sin(waveTime * 0.18) + 0.07 * Math.sin(waveTime * 0.47 + 1.3);
+      if (Math.random() < 0.002) d.windGust = 0.6 + Math.random() * 0.7;
+      d.windGust *= 0.96;
+      const target = base + d.windGust;
+      d.windStrength = d.windStrength * 0.96 + target * 0.04;
+      d.windStrength = Math.max(-1.2, Math.min(1.2, d.windStrength));
+    }
+
+    d.bananas.forEach(b => {
+      switch(d.effect) {
+        case 'drift': updateDrift(b, t, w, h); break;
+        case 'spin': updateSpin(b, now); break;
+        case 'wobble': updateWobble(b, t); break;
+        case 'stretch': updateStretch(b, now); break;
+        case 'popcorn': updatePopcorn(b, now, w, h); break;
+        case 'breeze': updateBreeze(b, waveTime, d.windStrength); break;
+      }
+      drawBanana(ctx, b, d.effect);
+    });
+  }
+
+  bananaImg.onload = () => {
+    // Initialize first section
+    if (sectionData.length > 0) {
+      resizeSection(sectionData[0]);
+      initEffect(sectionData[0]);
+      activeSection = sectionData[0];
+    }
+    requestAnimationFrame(frame);
+  };
+
+  window.addEventListener('resize', () => {
+    sectionData.forEach(d => {
+      if (!d.initialized) return;
+      const oldW = d.w || 1;
+      const oldH = d.h || 1;
+      resizeSection(d);
+      const scaleX = d.w / oldW;
+      const scaleY = d.h / oldH;
+      d.bananas.forEach(b => {
+        b.baseX *= scaleX;
+        b.baseY *= scaleY;
+        b.x *= scaleX;
+        b.y *= scaleY;
+        if (d.effect === 'breeze') {
+          b.stemX *= scaleX;
+          b.stemY *= scaleY;
+        }
+      });
+    });
+  });
+
+  // ---- Scroll reveal ----
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  // ---- Disable right-click on images ----
+  document.addEventListener('contextmenu', (e) => {
+    if (e.target.tagName === 'IMG' || e.target.tagName === 'CANVAS') {
+      e.preventDefault();
+    }
+  });
+
+  // ---- Disable drag on images ----
+  document.querySelectorAll('img').forEach(img => {
+    img.setAttribute('draggable', 'false');
+  });
+
+  // ---- Testimony banana button ----
+  // Add audio files here as you collect them
+  const testimonySounds = [
+    // 'audio/person1.mp3',
+    // 'audio/person2.mp3',
+  ];
+  const testimonyBtn = document.getElementById('testimonyBtn');
+  const testimonyHint = document.querySelector('.testimony-hint');
+  let lastTestimony = -1;
+  let testimonyAudio = null;
+
+  testimonyBtn.addEventListener('click', () => {
+    testimonyBtn.classList.remove('playing');
+    void testimonyBtn.offsetWidth;
+    testimonyBtn.classList.add('playing');
+
+    // Stop any currently playing clip
+    if (testimonyAudio) {
+      testimonyAudio.pause();
+      testimonyAudio = null;
+    }
+
+    if (testimonySounds.length === 0) {
+      testimonyHint.textContent = 'recordings coming soon';
+      setTimeout(() => { testimonyHint.textContent = 'tap the banana'; }, 2000);
+      return;
+    }
+
+    // Pick random clip, avoid repeating last
+    let idx;
+    do { idx = Math.floor(Math.random() * testimonySounds.length); }
+    while (testimonySounds.length > 1 && idx === lastTestimony);
+    lastTestimony = idx;
+
+    testimonyAudio = new Audio(testimonySounds[idx]);
+    testimonyAudio.play().catch(() => {});
+    testimonyHint.textContent = 'this is bananas';
+    testimonyAudio.addEventListener('ended', () => {
+      testimonyHint.textContent = 'tap the banana';
+      testimonyAudio = null;
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>
