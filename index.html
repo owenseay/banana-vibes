@@ -494,9 +494,6 @@
       .placard { padding: 24px 24px; }
     }
 
-    /* ============================================
-       TESTIMONY SECTION
-       ============================================ */
     .testimony-btn {
       display: flex;
       align-items: center;
@@ -697,34 +694,12 @@
 
 
 <!-- ================================================================
-     LEVEL 5: POPCORN
-     ================================================================ -->
-<section class="level" data-effect="popcorn">
-  <canvas></canvas>
-  <div class="level-overlay">
-    <p class="level-number reveal">Vibe 05</p>
-    <h2 class="level-title reveal reveal-d1">Bounce</h2>
-    <p class="level-desc reveal reveal-d2">
-      Full physics simulation. Bananas launch from the ground, bounce off walls,
-      perform mid-air trick flips. 8% are designated <strong>hero jumpers</strong>&mdash;elite bananas
-      with boosted super-arc acrobatic energy and a <em>3% chance per frame</em>
-      of launching across the entire screen.
-    </p>
-    <div class="stat-row reveal reveal-d3">
-      <div class="stat"><div class="stat-val">0.5g</div><div class="stat-label">Gravity</div></div>
-      <div class="stat"><div class="stat-val">8%</div><div class="stat-label">Hero Jumpers</div></div>
-      <div class="stat"><div class="stat-val">3%</div><div class="stat-label">Launch Chance</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================================================================
-     LEVEL 6: BREEZE
+     LEVEL 5: BREEZE
      ================================================================ -->
 <section class="level" data-effect="breeze">
   <canvas></canvas>
   <div class="level-overlay">
-    <p class="level-number reveal">Vibe 06</p>
+    <p class="level-number reveal">Vibe 05</p>
     <h2 class="level-title reveal reveal-d1">Breeze</h2>
     <p class="level-desc reveal reveal-d2">
       A banana tree. Spring-damper physics with turbulence modeling,
@@ -740,16 +715,26 @@
 </section>
 
 <!-- ================================================================
-     TESTIMONIALS CAROUSEL — "This is bananas"
+     LEVEL 6: BOUNCE
      ================================================================ -->
-<section class="interlude testimonial-section">
-  <div class="interlude-inner">
-    <p class="big reveal" style="margin-bottom: 40px;">Testimonials from real people that this is in fact bananas</p>
-    <button class="testimony-btn reveal reveal-d1" id="testimonyBtn">&#127820;</button>
-    <p class="testimony-hint reveal reveal-d2">tap the banana</p>
+<section class="level" data-effect="popcorn">
+  <canvas></canvas>
+  <div class="level-overlay">
+    <p class="level-number reveal">Vibe 06</p>
+    <h2 class="level-title reveal reveal-d1">Bounce</h2>
+    <p class="level-desc reveal reveal-d2">
+      Full physics simulation. Bananas launch from the ground, bounce off walls,
+      perform mid-air trick flips. 8% are designated <strong>hero jumpers</strong>&mdash;elite bananas
+      with boosted super-arc acrobatic energy and a <em>3% chance per frame</em>
+      of launching across the entire screen.
+    </p>
+    <div class="stat-row reveal reveal-d3">
+      <div class="stat"><div class="stat-val">0.5g</div><div class="stat-label">Gravity</div></div>
+      <div class="stat"><div class="stat-val">8%</div><div class="stat-label">Hero Jumpers</div></div>
+      <div class="stat"><div class="stat-val">3%</div><div class="stat-label">Launch Chance</div></div>
+    </div>
   </div>
 </section>
-
 
 <!-- ================================================================
      FOOTER
@@ -1148,48 +1133,6 @@
     img.setAttribute('draggable', 'false');
   });
 
-  // ---- Testimony banana button ----
-  // Add audio files here as you collect them
-  const testimonySounds = [
-    // 'audio/person1.mp3',
-    // 'audio/person2.mp3',
-  ];
-  const testimonyBtn = document.getElementById('testimonyBtn');
-  const testimonyHint = document.querySelector('.testimony-hint');
-  let lastTestimony = -1;
-  let testimonyAudio = null;
-
-  testimonyBtn.addEventListener('click', () => {
-    testimonyBtn.classList.remove('playing');
-    void testimonyBtn.offsetWidth;
-    testimonyBtn.classList.add('playing');
-
-    // Stop any currently playing clip
-    if (testimonyAudio) {
-      testimonyAudio.pause();
-      testimonyAudio = null;
-    }
-
-    if (testimonySounds.length === 0) {
-      testimonyHint.textContent = 'recordings coming soon';
-      setTimeout(() => { testimonyHint.textContent = 'tap the banana'; }, 2000);
-      return;
-    }
-
-    // Pick random clip, avoid repeating last
-    let idx;
-    do { idx = Math.floor(Math.random() * testimonySounds.length); }
-    while (testimonySounds.length > 1 && idx === lastTestimony);
-    lastTestimony = idx;
-
-    testimonyAudio = new Audio(testimonySounds[idx]);
-    testimonyAudio.play().catch(() => {});
-    testimonyHint.textContent = 'this is bananas';
-    testimonyAudio.addEventListener('ended', () => {
-      testimonyHint.textContent = 'tap the banana';
-      testimonyAudio = null;
-    });
-  });
 
 })();
 </script>
