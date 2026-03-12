@@ -45,7 +45,7 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { }
 
     body {
       font-family: 'Inter', system-ui, sans-serif;
@@ -741,6 +741,7 @@
      ================================================================ -->
 <footer>
   <p>This is bananas.</p>
+  <a href="technical.html" style="display: inline-block; margin-top: 20px; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; color: rgba(0,0,0,0.25); text-decoration: none; transition: color 0.2s;">peel →</a>
 </footer>
 
 
@@ -1132,6 +1133,83 @@
   document.querySelectorAll('img').forEach(img => {
     img.setAttribute('draggable', 'false');
   });
+
+  // ---- Gentle scroll snap (releases on continued scroll) ----
+  (function() {
+    const sections = document.querySelectorAll('.level');
+    let idleTimer = null;
+    let snapAnim = null;
+    let isProgrammatic = false; // true while our animation is scrolling
+
+    // Idle detector: only fires when user stops scrolling
+    window.addEventListener('scroll', function() {
+      if (isProgrammatic) return; // ignore our own scrollTo calls
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(onScrollIdle, 200);
+    }, { passive: true });
+
+    // Real user input = cancel any in-progress snap
+    function onUserInput() {
+      if (snapAnim) {
+        cancelAnimationFrame(snapAnim);
+        snapAnim = null;
+        isProgrammatic = false;
+      }
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(onScrollIdle, 200);
+    }
+    window.addEventListener('wheel', onUserInput, { passive: true });
+    window.addEventListener('touchstart', onUserInput, { passive: true });
+    window.addEventListener('keydown', function(e) {
+      if (['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].includes(e.key)) {
+        onUserInput();
+      }
+    }, { passive: true });
+
+    function onScrollIdle() {
+      const vh = window.innerHeight;
+      const sy = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - vh;
+
+      // Don't snap if user is near the very bottom (let them reach footer)
+      if (sy > maxScroll - vh * 0.5) return;
+
+      let closest = null;
+      let closestDist = Infinity;
+
+      sections.forEach(sec => {
+        const top = sec.offsetTop;
+        const dist = Math.abs(sy - top);
+        if (dist < vh * 0.3 && dist < closestDist) {
+          closestDist = dist;
+          closest = sec;
+        }
+      });
+
+      if (!closest || closestDist < 3) return;
+
+      // Sine-eased snap
+      const start = window.scrollY;
+      const target = closest.offsetTop;
+      const duration = 450;
+      const t0 = performance.now();
+      isProgrammatic = true;
+
+      function tick(now) {
+        const elapsed = now - t0;
+        const t = Math.min(elapsed / duration, 1);
+        const ease = 0.5 - 0.5 * Math.cos(t * Math.PI);
+        window.scrollTo(0, start + (target - start) * ease);
+        if (t < 1) {
+          snapAnim = requestAnimationFrame(tick);
+        } else {
+          snapAnim = null;
+          isProgrammatic = false;
+        }
+      }
+      snapAnim = requestAnimationFrame(tick);
+    }
+  })();
 
 
 })();
