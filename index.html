@@ -1195,7 +1195,7 @@
 
   // ---- Gentle scroll snap (releases on continued scroll) ----
   (function() {
-    const sections = document.querySelectorAll('.level');
+    const sections = Array.from(document.querySelectorAll('.level')).filter(s => !s.classList.contains('hero-section'));
     let idleTimer = null;
     let snapAnim = null;
     let isProgrammatic = false; // true while our animation is scrolling
