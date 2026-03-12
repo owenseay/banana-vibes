@@ -619,7 +619,7 @@
     <p class="level-number reveal">Vibe 01</p>
     <h2 class="level-title reveal reveal-d1">Drift</h2>
     <p class="level-desc reveal reveal-d2">
-      Suspended in space. Each banana floats on its own sinusoidal path,
+      Suspended in mid-air. Each banana floats on its own sinusoidal path,
       gently rocking, answering to no one. <em>Quiet. Meditative. Completely unnecessary.</em>
     </p>
     <div class="stat-row reveal reveal-d3">
@@ -631,12 +631,33 @@
 </section>
 
 <!-- ================================================================
-     LEVEL 2: SPIN
+     LEVEL 2: SPACE
+     ================================================================ -->
+<section class="level" data-effect="space">
+  <canvas></canvas>
+  <div class="level-overlay">
+    <p class="level-number reveal">Vibe 02</p>
+    <h2 class="level-title reveal reveal-d1">Space</h2>
+    <p class="level-desc reveal reveal-d2">
+      With no anchor, no return path, and no destination, lazy space bananas are
+      completely untethered. Each one left home on its own sine-modulated arc
+      and <em>has no intention of coming back.</em>
+    </p>
+    <div class="stat-row reveal reveal-d3">
+      <div class="stat"><div class="stat-val">Toroidal</div><div class="stat-label">Topology</div></div>
+      <div class="stat"><div class="stat-val">0.25</div><div class="stat-label">px/frame</div></div>
+      <div class="stat"><div class="stat-val">&plusmn;0.2&deg;</div><div class="stat-label">Tumble</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     LEVEL 3: SPIN
      ================================================================ -->
 <section class="level" data-effect="spin">
   <canvas></canvas>
   <div class="level-overlay">
-    <p class="level-number reveal">Vibe 02</p>
+    <p class="level-number reveal">Vibe 03</p>
     <h2 class="level-title reveal reveal-d1">Spin</h2>
     <p class="level-desc reveal reveal-d2">
       Some bananas rotate at a constant velocity. Others accelerate in random bursts,
@@ -652,12 +673,12 @@
 </section>
 
 <!-- ================================================================
-     LEVEL 3: WOBBLE
+     LEVEL 4: WOBBLE
      ================================================================ -->
 <section class="level" data-effect="wobble">
   <canvas></canvas>
   <div class="level-overlay">
-    <p class="level-number reveal">Vibe 03</p>
+    <p class="level-number reveal">Vibe 04</p>
     <h2 class="level-title reveal reveal-d1">Jitter</h2>
     <p class="level-desc reveal reveal-d2">
       Each high-strung banana exhibits stochastic tremors driven by noise-injected jitter. They never settle.
@@ -672,12 +693,12 @@
 </section>
 
 <!-- ================================================================
-     LEVEL 4: STRETCH
+     LEVEL 5: STRETCH
      ================================================================ -->
 <section class="level" data-effect="stretch">
   <canvas></canvas>
   <div class="level-overlay">
-    <p class="level-number reveal">Vibe 04</p>
+    <p class="level-number reveal">Vibe 05</p>
     <h2 class="level-title reveal reveal-d1">Stretch</h2>
     <p class="level-desc reveal reveal-d2">
       Sine-based scaling on both axes simultaneously. The bananas breathe. They
@@ -694,12 +715,12 @@
 
 
 <!-- ================================================================
-     LEVEL 5: BREEZE
+     LEVEL 6: BREEZE
      ================================================================ -->
 <section class="level" data-effect="breeze">
   <canvas></canvas>
   <div class="level-overlay">
-    <p class="level-number reveal">Vibe 05</p>
+    <p class="level-number reveal">Vibe 06</p>
     <h2 class="level-title reveal reveal-d1">Breeze</h2>
     <p class="level-desc reveal reveal-d2">
       A banana tree. Spring-damper physics with turbulence modeling,
@@ -715,12 +736,12 @@
 </section>
 
 <!-- ================================================================
-     LEVEL 6: BOUNCE
+     LEVEL 7: BOUNCE
      ================================================================ -->
 <section class="level" data-effect="popcorn">
   <canvas></canvas>
   <div class="level-overlay">
-    <p class="level-number reveal">Vibe 06</p>
+    <p class="level-number reveal">Vibe 07</p>
     <h2 class="level-title reveal reveal-d1">Bounce</h2>
     <p class="level-desc reveal reveal-d2">
       Full physics simulation. Bananas launch from the ground, bounce off walls,
@@ -832,6 +853,13 @@
       this.flutterAmt = 0.12 + Math.random() * 1.2;
       this.maxAngle = 28 + Math.random() * 12;
       this.sensitivity = 0.7 + Math.random() * 0.9;
+      // Space
+      this.heading = Math.random() * Math.PI * 2;
+      this.spaceSpeed = 0.15 + Math.random() * 0.35;
+      this.turnRate = (0.1 + Math.random() * 0.4) * (Math.random() < 0.5 ? 1 : -1);
+      this.turnFreq = 0.05 + Math.random() * 0.15;
+      this.turnPhase = Math.random() * Math.PI * 2;
+      this.spinRate2 = (0.05 + Math.random() * 0.2) * (Math.random() < 0.5 ? 1 : -1);
     }
   }
 
@@ -923,6 +951,19 @@
   function updateStretch(b, now) {
     b.scaleX = 1 + 0.8 * Math.sin(now / 600 + b.phase);
     b.scaleY = 1 + 0.8 * Math.cos(now / 600 + b.phase);
+  }
+
+  function updateSpace(b, t, w, h) {
+    const time = t * 0.001;
+    b.heading += Math.sin(time * b.turnFreq + b.turnPhase) * b.turnRate * 0.016;
+    b.x += Math.cos(b.heading) * b.spaceSpeed;
+    b.y += Math.sin(b.heading) * b.spaceSpeed;
+    b.angle += b.spinRate2;
+    // Wrap around edges
+    if (b.x < -b.size) b.x = w + b.size;
+    if (b.x > w + b.size) b.x = -b.size;
+    if (b.y < -b.size) b.y = h + b.size;
+    if (b.y > h + b.size) b.y = -b.size;
   }
 
   function updatePopcorn(b, now, w, h) {
@@ -1075,6 +1116,7 @@
     d.bananas.forEach(b => {
       switch(d.effect) {
         case 'drift': updateDrift(b, t, w, h); break;
+        case 'space': updateSpace(b, t, w, h); break;
         case 'spin': updateSpin(b, now); break;
         case 'wobble': updateWobble(b, t); break;
         case 'stretch': updateStretch(b, now); break;
