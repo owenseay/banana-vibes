@@ -15,6 +15,9 @@
   <meta name="twitter:title" content="Peeling the Banana" />
   <meta name="twitter:description" content="A technical companion to Banana Vibes. Six animation systems, peeled back one by one." />
   <meta name="twitter:image" content="https://banana-vibes.netlify.app/og-image.png" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -49,7 +52,7 @@
       text-align: center;
       padding: 60px 24px;
       position: relative;
-      background: #ffffff;
+      background: linear-gradient(to bottom, #ffffff 70%, #fffdf5 100%);
       overflow: hidden;
     }
 
@@ -106,6 +109,11 @@
       max-width: 680px;
       margin: 0 auto;
       padding: 0 24px 60px;
+    }
+
+    .page-footer {
+      background: linear-gradient(to bottom, #fffdf5 0%, #ffffff 30%);
+      padding: 120px 24px 80px;
     }
 
     h2 {
@@ -346,31 +354,14 @@
      ============================================ -->
 <div class="content">
 
-  <!-- INTRO -->
-  <p>
-    Banana Vibes is a website about a single watercolor banana that accidentally defied the universe. Beneath the surface, it's powered by six distinct real-time animation systems, each one a different flavor of physics, math, and controlled chaos rendered on HTML5 Canvas.
-  </p>
-  <p>
-    This document peels back each one.
-  </p>
-
-  <h3>The Shared System</h3>
-
-  <ul class="glossary">
-    <li><span class="mono">bananaCount</span>: 247 per section</li>
-    <li><span class="mono">size</span>: 60–210px (randomized per banana)</li>
-    <li>Size cache: bucketed to nearest 8px, pre-rendered with high-quality smoothing</li>
-    <li>Rendering: single active section at a time, CSS opacity fade (0.6s) on transition</li>
-    <li>Canvas: one full-viewport canvas per section</li>
-  </ul>
-
   <nav class="toc">
     <a href="#drift">01 Drift</a>
-    <a href="#spin">02 Spin</a>
-    <a href="#jitter">03 Jitter</a>
-    <a href="#stretch">04 Stretch</a>
-    <a href="#breeze">05 Breeze</a>
-    <a href="#bounce">06 Bounce</a>
+    <a href="#space">02 Space</a>
+    <a href="#spin">03 Spin</a>
+    <a href="#jitter">04 Jitter</a>
+    <a href="#stretch">05 Stretch</a>
+    <a href="#breeze">06 Breeze</a>
+    <a href="#bounce">07 Bounce</a>
   </nav>
 
   <div class="section-divider"></div>
@@ -416,7 +407,54 @@
 
   <div class="section-divider"></div>
 
-  <h2 id="spin"><span class="vibe-num">Vibe 02</span>Spin</h2>
+  <h2 id="space"><span class="vibe-num">Vibe 02</span>Space</h2>
+
+  <div class="demo-wrap">
+    <canvas id="demo-space"></canvas>
+    <button class="demo-reset" data-demo="demo-space">reset</button>
+  </div>
+
+  <ul class="glossary">
+    <li><span class="mono">heading</span>: random initial direction (0–2π radians)</li>
+    <li><span class="mono">spaceSpeed</span>: 0.15–0.50 px/frame</li>
+    <li><span class="mono">turnRate</span>: ±0.1–0.5 (heading rotation intensity)</li>
+    <li><span class="mono">turnFreq</span>: 0.05–0.15 Hz (how fast heading drifts)</li>
+    <li><span class="mono">spinRate</span>: ±0.05–0.25°/frame (visual tumble)</li>
+    <li>Topology: toroidal (edges wrap to opposite side)</li>
+    <li>Anchors: none</li>
+  </ul>
+
+  <h3>Heading Formula</h3>
+
+  <p>
+    <span class="mono">heading += sin(t × turnFreq + turnPhase) × turnRate × 0.016</span>
+  </p>
+  <p>
+    <span class="mono">x += cos(heading) × spaceSpeed</span><br>
+    <span class="mono">y += sin(heading) × spaceSpeed</span>
+  </p>
+
+  <div class="qa">
+    <p class="qa-q">Why do they never come back to where they started?</p>
+    <p class="qa-a">Every other vibe anchors its bananas to a home position. Drift has <span class="mono">baseX</span>/<span class="mono">baseY</span>, Breeze has <span class="mono">stemX</span>/<span class="mono">stemY</span>, Bounce has the floor. The position formula always pulls back toward that anchor. Space doesn't have one. There's no base position in the math at all. Each frame, the banana just moves forward along its current heading. The new position is the old position plus a velocity vector. Nothing references where the banana was born. Nothing pulls it back.</p>
+    <p class="qa-a">It's the only vibe where a banana's starting position is completely irrelevant after frame one.</p>
+  </div>
+
+  <div class="qa">
+    <p class="qa-q">What makes the paths curve instead of going in straight lines?</p>
+    <p class="qa-a">The heading angle isn't fixed. Every frame it gets nudged by the same sine function from Drift, but applied to the direction of travel instead of position: <span class="mono">sin(t × turnFreq + turnPhase) × turnRate</span>. So the banana's heading is always slowly rotating. When the sine output is positive, the heading drifts one way. When it crosses zero and goes negative, the heading starts drifting the other way. The result is long, lazy, sweeping arcs that periodically reverse curvature.</p>
+    <p class="qa-a">Because <span class="mono">turnFreq</span>, <span class="mono">turnRate</span>, and <span class="mono">turnPhase</span> are all randomized per banana, every banana curves at a different rate, in a different direction, on a different cycle. Two bananas might be heading the same way for a while, then one veers off and the other keeps going. The paths never repeat because the interaction between the heading sine wave and the forward motion creates curves that constantly evolve.</p>
+  </div>
+
+  <div class="qa">
+    <p class="qa-q">What happens when a banana reaches the edge of the screen?</p>
+    <p class="qa-a">It wraps. If a banana drifts off the right side, it reappears on the left. Off the bottom, back in at the top. The canvas is topologically a torus: the left edge is connected to the right edge, the top is connected to the bottom. It's the same geometry as Pac-Man's map, or the surface of a donut if you unrolled it flat.</p>
+    <p class="qa-a">No banana is ever destroyed or created. The same 247 wander forever on an infinite looping surface. They just happen to be visible during the portion of their journey that crosses your screen.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <h2 id="spin"><span class="vibe-num">Vibe 03</span>Spin</h2>
 
   <div class="demo-wrap">
     <canvas id="demo-spin"></canvas>
@@ -441,7 +479,7 @@
 
   <div class="section-divider"></div>
 
-  <h2 id="jitter"><span class="vibe-num">Vibe 03</span>Jitter</h2>
+  <h2 id="jitter"><span class="vibe-num">Vibe 04</span>Jitter</h2>
 
   <div class="demo-wrap">
     <canvas id="demo-jitter"></canvas>
@@ -465,7 +503,7 @@
 
   <div class="section-divider"></div>
 
-  <h2 id="stretch"><span class="vibe-num">Vibe 04</span>Stretch</h2>
+  <h2 id="stretch"><span class="vibe-num">Vibe 05</span>Stretch</h2>
 
   <div class="demo-wrap">
     <canvas id="demo-stretch"></canvas>
@@ -495,7 +533,7 @@
 
   <div class="section-divider"></div>
 
-  <h2 id="breeze"><span class="vibe-num">Vibe 05</span>Breeze</h2>
+  <h2 id="breeze"><span class="vibe-num">Vibe 06</span>Breeze</h2>
 
   <div class="demo-wrap">
     <canvas id="demo-breeze"></canvas>
@@ -610,7 +648,7 @@
 
   <div class="section-divider"></div>
 
-  <h2 id="bounce"><span class="vibe-num">Vibe 06</span>Bounce</h2>
+  <h2 id="bounce"><span class="vibe-num">Vibe 07</span>Bounce</h2>
 
   <div class="demo-wrap">
     <canvas id="demo-bounce"></canvas>
@@ -648,7 +686,7 @@
 
   <div class="qa">
     <p class="qa-q">How does the bounce physics work?</p>
-    <p class="qa-a">Every banana sits on the ground until its <span class="mono">popDelay</span> timer expires (staggered 0–5 seconds so they don't all launch at once). Once it pops, gravity takes over. Each frame, <span class="mono">gravity</span> gets added to the banana's vertical velocity, pulling it down. When it hits the floor, its vertical velocity gets reversed and set to its current <span class="mono">bounceEnergy</span> value, launching it back up.</p>
+    <p class="qa-a">Bounce is the only vibe that simulates real physics. Every other vibe is purely mathematical: sine waves, scaling, heading rotation. Bounce has gravity, velocity, and collision. Every banana sits on the ground until its <span class="mono">popDelay</span> timer expires (staggered 0–5 seconds so they don't all launch at once). Once it pops, gravity takes over. Each frame, <span class="mono">gravity</span> gets added to the banana's vertical velocity, pulling it down. When it hits the floor, its vertical velocity gets reversed and set to its current <span class="mono">bounceEnergy</span> value, launching it back up.</p>
     <p class="qa-a">The key detail is that <span class="mono">bounceEnergy</span> increases with every bounce. Each landing adds a small amount of energy (+0.3–0.6 for regular bananas, +1.2–1.7 for heroes), so the bananas gradually bounce higher and higher until they cap out at <span class="mono">maxBounceEnergy</span>. They're not losing energy on each bounce like a real ball would. They're gaining it. Every landing is fuel for the next jump.</p>
     <p class="qa-a">Wall collisions just reverse horizontal velocity with a multiplier. Regular bananas lose half their speed on impact (×-0.5), so they tend to stay in their lane. Heroes barely lose anything (×-0.9), so they ricochet around the full width of the screen.</p>
   </div>
@@ -662,9 +700,11 @@
 
   <div class="section-divider"></div>
 
-  <p style="text-align: center; color: var(--gray); font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 1px; margin-top: 160px;">This is bananas.</p>
-  <p style="text-align: center; margin-top: 16px;"><a href="index.html" style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; color: rgba(0,0,0,0.25); text-decoration: none; transition: color 0.2s;"><span style="font-size: 11px;">←</span> vibes</a></p>
+</div>
 
+<div class="page-footer">
+  <p style="text-align: center; color: var(--gray); font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 1px;">This is bananas.</p>
+  <p style="text-align: center; margin-top: 16px;"><a href="index.html" style="font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; color: rgba(0,0,0,0.25); text-decoration: none; transition: color 0.2s;"><span style="font-size: 11px;">←</span> vibes</a></p>
 </div>
 
 <button class="scroll-top" id="scroll-top">&#8593;</button>
@@ -720,6 +760,8 @@
 
   function resize() {
     const rect = canvas.parentElement.getBoundingClientRect();
+    const oldW = w || rect.width;
+    const oldH = h || rect.height;
     w = rect.width;
     h = rect.height;
     canvas.width = w * dpr;
@@ -727,29 +769,33 @@
     canvas.style.width = w + 'px';
     canvas.style.height = h + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (bananas.length) {
+      const sx = w / oldW;
+      const sy = h / oldH;
+      bananas.forEach(b => { b.x *= sx; b.y *= sy; });
+    }
   }
 
   function init() {
     resize();
     bananas = [];
-    for (let i = 0; i < 247; i++) {
+    for (let i = 0; i < 12; i++) {
       const heading = Math.random() * Math.PI * 2;
-      const speed = 0.15 + Math.random() * 0.35;
+      const speed = 0.08 + Math.random() * 0.15;
       bananas.push({
         x: Math.random() * w,
         y: Math.random() * h,
-        size: 60 + Math.random() * 150,
+        size: 90 + Math.random() * 120,
         angle: Math.random() * 360,
         heading: heading,
         speed: speed,
         vx: Math.cos(heading) * speed,
         vy: Math.sin(heading) * speed,
-        // How fast the heading drifts (random walk on direction)
-        turnRate: (0.1 + Math.random() * 0.4) * (Math.random() < 0.5 ? 1 : -1),
-        turnFreq: 0.05 + Math.random() * 0.15,
+        opacity: 0.16 + Math.random() * 0.08,
+        turnRate: (0.1 + Math.random() * 0.3) * (Math.random() < 0.5 ? 1 : -1),
+        turnFreq: 0.03 + Math.random() * 0.1,
         turnPhase: Math.random() * Math.PI * 2,
-        // Slow visual rotation (degrees per frame)
-        spinRate: (0.05 + Math.random() * 0.2) * (Math.random() < 0.5 ? 1 : -1)
+        spinRate: (0.02 + Math.random() * 0.1) * (Math.random() < 0.5 ? 1 : -1)
       });
     }
   }
@@ -791,6 +837,7 @@
 
       const scaled = getScaled(b.size);
       ctx.save();
+      ctx.globalAlpha = b.opacity || 1;
       ctx.translate(b.x, b.y);
       ctx.rotate(b.angle * Math.PI / 180);
       ctx.drawImage(scaled, -scaled.width / 2, -scaled.height / 2);
@@ -919,6 +966,37 @@
         b.x = b.baseX + Math.sin(time + b.offsetX) * b.driftX + Math.cos(time / 3) * 5;
         b.y = b.baseY + Math.sin(time + b.offsetY) * b.driftY + Math.sin(time / 3) * 5;
         b.angle = Math.sin(time * b.rotationSpeed) * (b.rotationAmplitude * 0.2);
+      },
+      function draw(ctx, b) { drawBanana(ctx, b, 1, 1); }
+    );
+
+    // ---- Space demo ----
+    initDemo('demo-space', 8,
+      function init(w, h) {
+        const heading = Math.random() * Math.PI * 2;
+        return {
+          x: Math.random() * w,
+          y: Math.random() * h,
+          size: Math.random() * 80 + 70,
+          angle: Math.random() * 360,
+          heading: heading,
+          spaceSpeed: 0.15 + Math.random() * 0.35,
+          turnRate: (0.1 + Math.random() * 0.4) * (Math.random() < 0.5 ? 1 : -1),
+          turnFreq: 0.05 + Math.random() * 0.15,
+          turnPhase: Math.random() * Math.PI * 2,
+          spinRate: (0.05 + Math.random() * 0.2) * (Math.random() < 0.5 ? 1 : -1)
+        };
+      },
+      function update(b, t, w, h) {
+        const time = t * 0.001;
+        b.heading += Math.sin(time * b.turnFreq + b.turnPhase) * b.turnRate * 0.016;
+        b.x += Math.cos(b.heading) * b.spaceSpeed;
+        b.y += Math.sin(b.heading) * b.spaceSpeed;
+        b.angle += b.spinRate;
+        if (b.x < -b.size) b.x = w + b.size;
+        if (b.x > w + b.size) b.x = -b.size;
+        if (b.y < -b.size) b.y = h + b.size;
+        if (b.y > h + b.size) b.y = -b.size;
       },
       function draw(ctx, b) { drawBanana(ctx, b, 1, 1); }
     );
