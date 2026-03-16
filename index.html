@@ -802,6 +802,21 @@
 
   const BANANA_COUNT = 247; // the sacred number
 
+  // ---- Mulberry32 PRNG ----
+  // Deterministic pseudorandom number generator.
+  // Same seed always produces the same sequence of values.
+  // This is the genetic code of every banana.
+  function mulberry32(seed) {
+    let t = seed | 0;
+    return function() {
+      t = (t + 0x6D2B79F5) | 0;
+      let z = t;
+      z = Math.imul(z ^ (z >>> 15), z | 1);
+      z ^= z + Math.imul(z ^ (z >>> 7), z | 61);
+      return ((z ^ (z >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
   // ---- Pre-rendered size cache ----
   // Scale the banana ONCE per size with high-quality smoothing,
   // then draw those smooth versions with smoothing OFF = fast + crisp
@@ -822,23 +837,32 @@
 
   // ---- Banana class ----
   class Banana {
-    constructor(w, h) {
+    constructor(index, w, h) {
+      this.index = index;
       this.reset(w, h);
     }
     reset(w, h) {
+      // Seed the PRNG with this banana's index.
+      // Every call to r() advances the sequence deterministically.
+      // Banana #47 will always get the same values, every load, forever.
+      const r = mulberry32(this.index * 2654435761); // golden ratio hash spread
+
+      // --- SPAWN POSITION (random every load) ---
       this.baseX = Math.random() * w;
       this.baseY = Math.random() * h;
-      this.size = Math.random() * 150 + 60;
-      this.offsetX = Math.random() * Math.PI * 2;
-      this.offsetY = Math.random() * Math.PI * 2;
-      this.driftX = Math.random() * 40 + 10;
-      this.driftY = Math.random() * 40 + 10;
-      this.angle = Math.random() * 360;
-      this.rotationSpeed = Math.random() * 0.03 + 0.005;
-      this.rotationAmplitude = Math.random() * 45 + 5;
-      this.phase = Math.random() * Math.PI * 2;
-      this.spinStyle = Math.random() < 0.2 ? 'constant' : 'dynamic';
-      this.spinRate = Math.random() * 10 + 5;
+
+      // --- IDENTITY PARAMETERS (seeded) ---
+      this.size = r() * 150 + 60;
+      this.offsetX = r() * Math.PI * 2;
+      this.offsetY = r() * Math.PI * 2;
+      this.driftX = r() * 40 + 10;
+      this.driftY = r() * 40 + 10;
+      this.angle = r() * 360;
+      this.rotationSpeed = r() * 0.03 + 0.005;
+      this.rotationAmplitude = r() * 45 + 5;
+      this.phase = r() * Math.PI * 2;
+      this.spinStyle = r() < 0.2 ? 'constant' : 'dynamic';
+      this.spinRate = r() * 10 + 5;
       this.spinBoost = 0;
       this.scaleX = 1;
       this.scaleY = 1;
@@ -846,45 +870,52 @@
       this.y = this.baseY;
       this.vy = 0;
       this.vx = 0;
-      this.gravity = 0.5 + Math.random() * 0.05;
+      // Bounce / Popcorn
+      this.gravity = 0.5 + r() * 0.05;
       this.bounceEnergy = 0;
-      this.maxBounceEnergy = 15 + Math.random() * 10;
-      this.popDelay = Math.random() * 5000;
+      this.maxBounceEnergy = 15 + r() * 10;
+      this.popDelay = r() * 5000;
       this.dropStartTime = 0;
       this.hasPopped = false;
       this.isTricking = false;
       this.trickTimer = 0;
-      this.heroJump = Math.random() < 0.08;
-      this.maxVX = this.heroJump ? 12 + Math.random() * 4 : 6 + Math.random() * 3;
-      this.heroCooldown = 2000 + Math.random() * 3000;
+      this.heroJump = r() < 0.08;
+      this.maxVX = this.heroJump ? 12 + r() * 4 : 6 + r() * 3;
+      this.heroCooldown = 2000 + r() * 3000;
       this.lastHeroJump = 0;
+      // Breeze
       this.stemX = 0;
       this.stemY = 0;
       this.length = 0;
       this.angularVel = 0;
-      this.restAngle = (Math.random() - 0.5) * 6;
+      this.restAngle = (r() - 0.5) * 6;
       this.restDrift = 0;
-      this.kBase = 0.016 + Math.random() * 0.02;
-      this.dBase = 0.08 + Math.random() * 0.10;
-      this.response = 0.02 + Math.random() * 0.03;
+      this.kBase = 0.016 + r() * 0.02;
+      this.dBase = 0.08 + r() * 0.10;
+      this.response = 0.02 + r() * 0.03;
       this.targetFiltered = 0;
       this.noise1 = 0;
       this.noise2 = 0;
-      this.nRate1 = 0.25 + Math.random() * 0.45;
-      this.nRate2 = 0.60 + Math.random() * 0.90;
-      this.nPhase1 = Math.random() * Math.PI * 2;
-      this.nPhase2 = Math.random() * Math.PI * 2;
-      this.airinessDeg = 6 + Math.random() * 10;
-      this.flutterAmt = 0.12 + Math.random() * 1.2;
-      this.maxAngle = 28 + Math.random() * 12;
-      this.sensitivity = 0.7 + Math.random() * 0.9;
+      this.nRate1 = 0.25 + r() * 0.45;
+      this.nRate2 = 0.60 + r() * 0.90;
+      this.nPhase1 = r() * Math.PI * 2;
+      this.nPhase2 = r() * Math.PI * 2;
+      this.airinessDeg = 6 + r() * 10;
+      this.flutterAmt = 0.12 + r() * 1.2;
+      this.maxAngle = 28 + r() * 12;
+      this.sensitivity = 0.7 + r() * 0.9;
       // Space
-      this.heading = Math.random() * Math.PI * 2;
-      this.spaceSpeed = 0.15 + Math.random() * 0.35;
-      this.turnRate = (0.1 + Math.random() * 0.4) * (Math.random() < 0.5 ? 1 : -1);
-      this.turnFreq = 0.05 + Math.random() * 0.15;
-      this.turnPhase = Math.random() * Math.PI * 2;
-      this.spinRate2 = (0.05 + Math.random() * 0.2) * (Math.random() < 0.5 ? 1 : -1);
+      this.heading = r() * Math.PI * 2;
+      this.spaceSpeed = 0.15 + r() * 0.35;
+      this.turnRate = (0.1 + r() * 0.4) * (r() < 0.5 ? 1 : -1);
+      this.turnFreq = 0.05 + r() * 0.15;
+      this.turnPhase = r() * Math.PI * 2;
+      this.spinRate2 = (0.05 + r() * 0.2) * (r() < 0.5 ? 1 : -1);
+      // Store seeded values for breeze init (position-dependent, applied in initEffect)
+      this._breezeX = r();
+      this._breezeY = r();
+      this._breezeLen = r();
+      this._breezeAngle = r();
     }
   }
 
@@ -899,7 +930,7 @@
     const effect = sec.dataset.effect;
     const bananas = [];
     for (let i = 0; i < BANANA_COUNT; i++) {
-      bananas.push(new Banana(1, 1));
+      bananas.push(new Banana(i, 1, 1));
     }
     sectionData.push({ sec, canvas, ctx, effect, bananas, ratio: 0, initialized: false, windStrength: 0, windGust: 0 });
   });
@@ -924,10 +955,8 @@
     const now = performance.now();
     d.bananas.forEach(b => {
       b.reset(w, h);
-      b.x = Math.random() * w;
-      b.y = Math.random() * h;
-      b.baseX = b.x;
-      b.baseY = b.y;
+      b.x = b.baseX;
+      b.y = b.baseY;
 
       if (d.effect === 'popcorn') {
         b.y = h - b.size / 2;
@@ -940,8 +969,8 @@
       if (d.effect === 'breeze') {
         b.stemX = Math.random() * w;
         b.stemY = 10 + Math.random() * (h * 0.30);
-        b.length = b.size * (0.55 + Math.random() * 0.15);
-        b.angle = (Math.random() - 0.5) * 10;
+        b.length = b.size * (0.55 + b._breezeLen * 0.15);
+        b.angle = (b._breezeAngle - 0.5) * 10;
         b.angularVel = 0;
         b.x = b.stemX;
         b.y = b.stemY + b.length;
