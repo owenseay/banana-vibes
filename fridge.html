@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RW2M288FMF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-RW2M288FMF');
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>About — Banana Vibes</title>
+  <title>How far can one banana go?</title>
   <meta name="author" content="Owen Seay" />
   <meta name="copyright" content="© 2024 Owen Seay. All rights reserved." />
+  <meta name="description" content="How far can one banana go?" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bananavibes.lol/fridge.html" />
-  <meta property="og:title" content="About — Banana Vibes" />
-  <meta property="og:description" content="Meet the chief banana." />
+  <meta property="og:title" content="How far can one banana go?" />
+  <meta property="og:description" content="How far can one banana go?" />
   <meta property="og:image" content="https://bananavibes.lol/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="About — Banana Vibes" />
-  <meta name="twitter:description" content="Meet the chief banana." />
+  <meta name="twitter:title" content="How far can one banana go?" />
+  <meta name="twitter:description" content="How far can one banana go?" />
   <meta name="twitter:image" content="https://bananavibes.lol/og-image.png" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -24,121 +33,247 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #fffdf5;
+      --ink: #1a1a1a;
+      --banana: #f5c518;
+      --banana-deep: #d4a012;
+      --gray: #888;
+      --light-gray: #e8e5dd;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: #fffdf5;
-      color: #1a1a1a;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.8;
+      font-size: 17px;
+    }
+
+    /* ---- Cover ---- */
+    .cover {
       display: flex;
       flex-direction: column;
+      justify-content: center;
       align-items: center;
-      padding: 80px 24px 0;
-      overflow-x: hidden;
-    }
-
-    .video-wrap, .photo-grid, .page-footer {
-      position: relative;
-      z-index: 1;
-    }
-
-    .video-wrap {
-      width: 100%;
-      max-width: 640px;
-      aspect-ratio: 16 / 9;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
-    }
-
-    .video-wrap iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    .photo-grid {
-      display: flex;
-      gap: 16px;
-      margin-top: 40px;
-      max-width: 640px;
-      width: 100%;
-      align-items: flex-start;
-    }
-
-    .photo-grid .col-left {
-      flex: 3;
-    }
-
-    .photo-grid .col-right {
-      flex: 4;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .photo-grid .photo-frame {
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .photo-grid .photo-frame:hover {
-      transform: scale(1.02);
-      box-shadow: 0 12px 50px rgba(0,0,0,0.12);
-    }
-
-    .photo-grid .photo-frame img {
-      width: 100%;
-      display: block;
-    }
-
-    .ghost-canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .page-footer {
-      padding: 120px 24px 80px;
       text-align: center;
-      background: linear-gradient(to bottom, #fffdf5 0%, #ffffff 30%);
-      align-self: stretch;
-      margin-left: -24px;
-      margin-right: -24px;
-      margin-top: auto;
+      padding: 80px 24px 60px;
+      position: relative;
+      background: linear-gradient(to bottom, #ffffff 70%, #fffdf5 100%);
     }
 
-    .footer-tagline {
+    .cover-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(36px, 7vw, 64px);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.15;
+    }
+
+    .cover-title .banana-word {
+      color: var(--banana);
+    }
+
+    .cover-sub {
       font-family: 'Space Mono', monospace;
-      font-size: 12px;
-      letter-spacing: 2px;
-      color: rgba(0,0,0,0.25);
+      font-size: clamp(12px, 2vw, 15px);
+      color: var(--gray);
+      margin-top: 20px;
+      letter-spacing: 1px;
     }
 
-    .footer-name {
+    .cover-divider {
+      width: 60px;
+      height: 3px;
+      background: var(--banana);
+      margin: 40px auto;
+      border-radius: 2px;
+    }
+
+    .cover-img {
+      width: 100%;
+      max-width: 560px;
+      border-radius: 12px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+      margin-top: 10px;
+    }
+
+    /* ---- Content ---- */
+    .content {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+
+    .mono {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.88em;
+      color: var(--ink);
+      background: rgba(245, 197, 24, 0.15);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .section-divider {
+      width: 40px;
+      height: 2px;
+      background: var(--light-gray);
+      margin: 48px 0;
+    }
+
+    /* ---- Rules ---- */
+    h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      margin: 32px 0 24px;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+
+    h2 + .rule {
+      margin-top: 8px;
+    }
+
+    .rule {
+      margin-bottom: 32px;
+    }
+
+    .rule-name {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .rule-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--banana-deep);
+      letter-spacing: 2px;
+      margin-right: 6px;
+    }
+
+    .rule p {
+      margin-bottom: 0;
+      color: #444;
+    }
+
+    /* ---- Log ---- */
+    .log-entry {
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .log-entry summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 14px 0;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    .log-entry summary::-webkit-details-marker { display: none; }
+    .log-entry summary::marker { display: none; content: ''; }
+
+    .log-date {
       font-family: 'Space Mono', monospace;
       font-size: 11px;
       letter-spacing: 2px;
-      color: rgba(0,0,0,0.25);
-      margin-top: 12px;
+      color: var(--gray);
       text-transform: uppercase;
+      flex-shrink: 0;
     }
 
-    .footer-links {
-      margin-top: 16px;
+    .log-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--banana-deep);
     }
 
-    .footer-links a,
-    .footer-links a:link,
-    .footer-links a:visited {
+    .log-body {
+      padding: 0 0 20px;
+    }
+
+    .log-body p {
+      color: #444;
+      margin-bottom: 12px;
+    }
+
+    .log-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .log-entry code {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      background: #fdf6e3;
+      border: 1px solid var(--banana-deep);
+      border-radius: 4px;
+      padding: 2px 7px;
+      color: var(--ink);
+    }
+
+    /* ---- Recursive Canvas ---- */
+    .recursive-section {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      min-height: 500px;
+      overflow: hidden;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      background: var(--bg);
+    }
+
+    .recursive-section canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .recursive-reset {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--gray);
+      background: rgba(255,253,245,0.7);
+      border: 1px solid var(--light-gray);
+      border-radius: 4px;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      z-index: 1;
+    }
+
+    .recursive-reset:hover {
+      color: var(--ink);
+      border-color: var(--gray);
+    }
+
+    /* ---- Footer ---- */
+    .page-footer {
+      background: linear-gradient(to bottom, #fffdf5 0%, #ffffff 30%);
+      padding: 120px 24px 80px;
+      text-align: center;
+    }
+
+    .page-footer a,
+    .page-footer a:link,
+    .page-footer a:visited {
       font-family: 'Space Mono', monospace;
       font-size: 11px;
       letter-spacing: 2px;
@@ -147,55 +282,138 @@
       transition: color 0.2s;
     }
 
-    .footer-links a:hover {
+    .page-footer a:hover {
       color: rgba(0,0,0,0.5);
     }
 
-    .footer-dot {
-      color: rgba(0,0,0,0.15);
-      margin: 0 8px;
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      h2 { font-size: 26px; }
+      .content { padding: 0 20px 80px; }
     }
   </style>
 </head>
 <body>
 
-<canvas class="ghost-canvas" id="ghost-canvas"></canvas>
+<!-- ============================================
+     COVER
+     ============================================ -->
+<div class="cover">
+  <h1 class="cover-title">
+    How far can one<br>
+    <span class="banana-word">banana</span> go?
+  </h1>
+  <div class="cover-divider"></div>
+  <img src="OG-fridge-banana.webp" alt="Owen in a banana suit pointing at the original watercolor banana on his refrigerator" class="cover-img" />
+</div>
 
-  <div class="video-wrap">
-    <iframe src="https://www.youtube.com/embed/bgaBzjs7nOU" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<!-- ============================================
+     RECURSIVE ANIMATION
+     ============================================ -->
+<div class="recursive-section">
+  <canvas id="recursive-canvas"></canvas>
+  <button class="recursive-reset" id="recursive-reset">reset</button>
+</div>
+
+<!-- ============================================
+     CONTENT
+     ============================================ -->
+<div class="content">
+
+  <!-- ============================================
+       RULES
+       ============================================ -->
+  <h2>Rules</h2>
+
+  <div class="rule">
+    <p class="rule-name"><span class="rule-num">01</span> The banana is fixed.</p>
+    <p>Everything starts from and returns to the banana. It's the constant. If something can't be traced back to the banana, it's not part of the experiment.</p>
   </div>
 
-  <div class="photo-grid">
-    <div class="col-left">
-      <div class="photo-frame"><img src="framed-banana.webp" alt="Owen in a banana suit pointing at a framed banana painting" /></div>
+  <div class="rule">
+    <p class="rule-name"><span class="rule-num">02</span> AI does the building.</p>
+    <p>The human role is direction, curation, judgment, and synthesis. The experiment is about what AI can generate, compound, and sustain&mdash;not what a person can make with AI as a tool. The distinction matters because they represent very different ceilings.</p>
+  </div>
+
+  <div class="rule">
+    <p class="rule-name"><span class="rule-num">03</span> The banana funds itself.</p>
+    <p>No external investment and no subsidy. The banana has to generate whatever resources it needs to keep expanding. If it can't, that's a valid answer to &ldquo;How far can one banana go?&rdquo; The constraint is the experiment.</p>
+  </div>
+
+  <div class="rule">
+    <p class="rule-name"><span class="rule-num">04</span> Every output is input.</p>
+    <p>Each thing the banana becomes feeds what it can become next. An animation, a product, a piece of documentation, a revenue stream&mdash;nothing is terminal. The system either compounds or it dies.</p>
+  </div>
+
+  <div class="rule">
+    <p class="rule-name"><span class="rule-num">05</span> Push into new territory.</p>
+    <p>The priority is discovery, not optimization. If a move or decision doesn't test whether the banana can go somewhere it hasn't yet been, that is considered maintenance, not experimentation.</p>
+  </div>
+
+  <div class="rule">
+    <p class="rule-name"><span class="rule-num">06</span> Track everything.</p>
+    <p>A record of what happened is as valuable as what is produced. What worked, what didn't, what was unexpected. The experiment is only useful if it can be deciphered.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ============================================
+       LOG
+       ============================================ -->
+  <h2>Log</h2>
+
+  <details class="log-entry" open>
+    <summary>
+      <span class="log-date">March 15, 2026</span>
+      <span class="log-title">Same banana, different trees</span>
+    </summary>
+    <div class="log-body">
+      <p>One banana starts at the center. After a couple seconds it spawns a smaller banana that drifts outward. That banana spawns its own, even smaller. Each generation gets smaller, drifts further, spawns slower. Faint golden lines connect each child back to its parent, tracing the lineage.</p>
+      <p>Every run produces a completely unique pattern, as every parameter that shapes the tree is driven by <code>Math.random()</code>.</p>
+      <p>So every time the page loads or you hit the reset button, the root banana starts in the same center position, but the entire branching structure that grows from it will be different—different directions, timing, density, shape. You'll never see the same tree twice.</p>
     </div>
-    <div class="col-right">
-      <div class="photo-frame"><img src="OG-fridge-banana.webp" alt="Owen in a banana suit pointing at the original banana on the fridge" /></div>
-      <div class="photo-frame" style="position: relative;">
-        <img src="owens_banana.webp" alt="The original watercolor banana cut out of paper with a real Dole sticker" oncontextmenu="return false" draggable="false" style="-webkit-user-select: none; user-select: none;" />
-        <span style="position: absolute; bottom: 12px; right: 14px; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); pointer-events: none; text-transform: uppercase;">banana vibes</span>
-      </div>
-    </div>
-  </div>
+  </details>
 
-  <div class="page-footer">
-    <p class="footer-tagline">This is bananas.</p>
-    <p class="footer-links"><a href="index.html">← vibes</a> <span class="footer-dot">·</span> <a href="technical.html">peel →</a></p>
-  </div>
+</div>
+
+<!-- ============================================
+     FOOTER
+     ============================================ -->
+<div class="page-footer">
+  <p style="color: rgba(0,0,0,0.25); font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 2px;">This is bananas.</p>
+  <p style="margin-top: 16px;"><a href="index.html">← vibes</a> <span style="color: rgba(0,0,0,0.15); margin: 0 8px;">·</span> <a href="technical.html">peel →</a></p>
+</div>
 
 <script>
 (function() {
-  const canvas = document.getElementById('ghost-canvas');
+  const canvas = document.getElementById('recursive-canvas');
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
-
   let w, h;
+  let started = false;
+  let startTime = 0;
+  let root = null;
+
+  function rescaleTree(node, sx, sy) {
+    node.x *= sx;
+    node.y *= sy;
+    node.children.forEach(c => rescaleTree(c, sx, sy));
+  }
+
   function resize() {
-    w = window.innerWidth;
-    h = window.innerHeight;
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const oldW = w || rect.width;
+    const oldH = h || rect.height;
+    w = rect.width;
+    h = rect.height;
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    if (root && oldW > 0 && oldH > 0) {
+      rescaleTree(root, w / oldW, h / oldH);
+    }
   }
   resize();
   window.addEventListener('resize', resize);
@@ -203,46 +421,182 @@
   const img = new Image();
   img.src = 'banana.png';
 
-  const b = {
-    x: Math.random() * w,
-    y: Math.random() * h,
-    size: 280,
-    heading: Math.random() * Math.PI * 2,
-    speed: 0.06,
-    turnRate: 0.15,
-    turnFreq: 0.04,
-    turnPhase: Math.random() * Math.PI * 2,
-    spinRate: 0.015,
-    angle: Math.random() * Math.PI * 2,
-    opacity: 0.12
-  };
+  class BananaNode {
+    constructor(x, y, size, angle, generation, parent, birthOffset) {
+      this.x = x;
+      this.y = y;
+      this.size = size;
+      this.angle = angle;
+      this.generation = generation;
+      this.parent = parent;
+      this.children = [];
+      this.birthOffset = birthOffset;
+      this.born = 0;
+      this.lastSpawn = 0;
+      this.opacity = 0;
+      this.fadeIn = true;
 
-  function loop(t) {
-    ctx.clearRect(0, 0, w, h);
-    if (!img.complete) { requestAnimationFrame(loop); return; }
+      this.driftPhase = Math.random() * Math.PI * 2;
+      this.driftSpeed = 0.3 + Math.random() * 0.4;
+      this.rotSpeed = (Math.random() - 0.5) * 0.3;
 
-    const time = t * 0.001;
-    b.heading += Math.sin(time * b.turnFreq + b.turnPhase) * b.turnRate * 0.016;
-    b.x += Math.cos(b.heading) * b.speed;
-    b.y += Math.sin(b.heading) * b.speed;
-    b.angle += b.spinRate * 0.016;
+      this.vx = 0;
+      this.vy = 0;
+      if (parent) {
+        const launchAngle = Math.random() * Math.PI * 2;
+        const speed = 0.3 + Math.random() * 0.5;
+        this.vx = Math.cos(launchAngle) * speed;
+        this.vy = Math.sin(launchAngle) * speed;
+      }
 
-    // toroidal wrap
-    if (b.x < -b.size) b.x = w + b.size;
-    if (b.x > w + b.size) b.x = -b.size;
-    if (b.y < -b.size) b.y = h + b.size;
-    if (b.y > h + b.size) b.y = -b.size;
+      this.spawnInterval = 2000 + generation * 800 + Math.random() * 2000;
+      this.maxChildren = generation === 0 ? 5 : Math.max(1, 4 - generation);
+    }
 
-    ctx.save();
-    ctx.globalAlpha = b.opacity;
-    ctx.translate(b.x, b.y);
-    ctx.rotate(b.angle);
-    ctx.drawImage(img, -b.size / 2, -b.size / 2, b.size, b.size);
-    ctx.restore();
+    init(now) {
+      this.born = now;
+      this.lastSpawn = now;
+    }
 
-    requestAnimationFrame(loop);
+    update(now, t) {
+      if (!this.born) this.init(now);
+      const age = now - this.born;
+
+      if (this.fadeIn) {
+        this.opacity = Math.min(1, age / 800);
+        if (this.opacity >= 1) this.fadeIn = false;
+      }
+
+      const time = t * 0.001;
+      this.x += this.vx + Math.sin(time * this.driftSpeed + this.driftPhase) * 0.02;
+      this.y += this.vy + Math.cos(time * this.driftSpeed + this.driftPhase + 1) * 0.02;
+      this.angle += this.rotSpeed;
+
+      this.vx *= 0.997;
+      this.vy *= 0.997;
+
+      if (this.children.length < this.maxChildren && now - this.lastSpawn > this.spawnInterval && this.generation < 5) {
+        this.spawnChild(now);
+      }
+
+      this.children.forEach(c => c.update(now, t));
+    }
+
+    spawnChild(now) {
+      const childSize = this.size * (0.45 + Math.random() * 0.15);
+      if (childSize < 8) return;
+
+      const child = new BananaNode(
+        this.x, this.y, childSize,
+        Math.random() * 360,
+        this.generation + 1,
+        this, 0
+      );
+      child.init(now);
+      this.children.push(child);
+      this.lastSpawn = now;
+    }
+
+    draw(ctx) {
+      if (!img.complete) return;
+
+      if (this.parent && this.opacity > 0.1) {
+        ctx.save();
+        ctx.globalAlpha = this.opacity * 0.25;
+        ctx.strokeStyle = '#d4a012';
+        ctx.lineWidth = Math.max(1, this.size * 0.03);
+        ctx.beginPath();
+        ctx.moveTo(this.parent.x, this.parent.y);
+        ctx.lineTo(this.x, this.y);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      ctx.save();
+      ctx.globalAlpha = this.opacity * (this.generation === 0 ? 1 : 0.7 + 0.3 / this.generation);
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angle * Math.PI / 180);
+      const s = this.size;
+      ctx.drawImage(img, -s / 2, -s / 2, s, s);
+      ctx.restore();
+
+      this.children.forEach(c => c.draw(ctx));
+    }
+
+    count() {
+      return 1 + this.children.reduce((sum, c) => sum + c.count(), 0);
+    }
   }
-  requestAnimationFrame(loop);
+
+  function initRoot() {
+    const rootSize = Math.min(140, w * 0.18);
+    root = new BananaNode(w / 2, h / 2, rootSize, -15, 0, null, 0);
+    // Ensure root always has a visible rotation
+    if (Math.abs(root.rotSpeed) < 0.08) {
+      root.rotSpeed = root.rotSpeed >= 0 ? 0.08 : -0.08;
+    }
+    startTime = performance.now();
+  }
+
+  document.getElementById('recursive-reset').addEventListener('click', function() {
+    root = null;
+    ctx.clearRect(0, 0, w, h);
+    resize();
+    initRoot();
+  });
+
+  function frame(t) {
+    if (!started) return;
+    requestAnimationFrame(frame);
+    if (!root || !img.complete) return;
+
+    const now = performance.now();
+    ctx.clearRect(0, 0, w, h);
+
+    root.update(now, t);
+    root.draw(ctx);
+
+    const total = root.count();
+    ctx.save();
+    ctx.font = '11px "Space Mono", monospace';
+    ctx.fillStyle = 'rgba(0,0,0,0.15)';
+    ctx.textAlign = 'center';
+    ctx.fillText(total === 1 ? '1 banana' : total + ' bananas', w / 2, h - 40);
+    ctx.restore();
+  }
+
+  // Start when image is ready and section is visible
+  function start() {
+    if (started) return;
+    resize();
+    if (w === 0 || h === 0) return; // layout not ready yet
+    started = true;
+    initRoot();
+    requestAnimationFrame(frame);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && img.complete) {
+        start();
+      }
+    });
+  }, { threshold: 0 });
+
+  observer.observe(canvas.parentElement);
+
+  function onImageReady() {
+    // Check if already visible
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const inView = rect.top < window.innerHeight && rect.bottom > 0;
+    if (inView) start();
+  }
+
+  if (img.complete) {
+    onImageReady();
+  } else {
+    img.onload = onImageReady;
+  }
 })();
 </script>
 

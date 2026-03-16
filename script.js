@@ -12,6 +12,8 @@ let   WAVE_K = 0;               // computed from width (radians per px)
 function resizeCanvas() {
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
   WAVE_K = (WAVE_CYCLES * Math.PI * 2) / canvas.width; // safe now
 }
 resizeCanvas();

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recursive Banana</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #fffdf5; overflow: hidden; }
+    canvas { display: block; width: 100vw; height: 100vh; }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  let w, h;
+  let root = null;
+
+  function rescaleTree(node, sx, sy) {
+    node.x *= sx;
+    node.y *= sy;
+    node.children.forEach(c => rescaleTree(c, sx, sy));
+  }
+
+  function resize() {
+    const oldW = w || window.innerWidth;
+    const oldH = h || window.innerHeight;
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (root && oldW > 0 && oldH > 0) {
+      rescaleTree(root, w / oldW, h / oldH);
+    }
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const img = new Image();
+  img.src = 'banana.png';
+
+  // Each banana node
+  class BananaNode {
+    constructor(x, y, size, angle, generation, parent) {
+      this.x = x;
+      this.y = y;
+      this.size = size;
+      this.angle = angle;
+      this.generation = generation;
+      this.parent = parent;
+      this.children = [];
+      this.born = performance.now();
+      this.lastSpawn = this.born;
+      this.opacity = 0;
+      this.fadeIn = true;
+
+      // Drift
+      this.driftPhase = Math.random() * Math.PI * 2;
+      this.driftSpeed = 0.3 + Math.random() * 0.4;
+      this.driftAmt = 2 + Math.random() * 3;
+      this.rotSpeed = (Math.random() - 0.5) * 0.3;
+
+      // Movement outward from parent
+      this.vx = 0;
+      this.vy = 0;
+      if (parent) {
+        const launchAngle = Math.random() * Math.PI * 2;
+        const speed = 0.3 + Math.random() * 0.5;
+        this.vx = Math.cos(launchAngle) * speed;
+        this.vy = Math.sin(launchAngle) * speed;
+      }
+
+      // Spawn timing — varies by generation
+      this.spawnInterval = 2000 + generation * 800 + Math.random() * 2000;
+      this.maxChildren = generation === 0 ? 5 : Math.max(1, 4 - generation);
+    }
+
+    update(now, t) {
+      const age = now - this.born;
+
+      // Fade in
+      if (this.fadeIn) {
+        this.opacity = Math.min(1, age / 800);
+        if (this.opacity >= 1) this.fadeIn = false;
+      }
+
+      // Gentle drift
+      const time = t * 0.001;
+      this.x += this.vx + Math.sin(time * this.driftSpeed + this.driftPhase) * 0.02;
+      this.y += this.vy + Math.cos(time * this.driftSpeed + this.driftPhase + 1) * 0.02;
+      this.angle += this.rotSpeed;
+
+      // Slow down over time
+      this.vx *= 0.997;
+      this.vy *= 0.997;
+
+      // Spawn children
+      if (this.children.length < this.maxChildren && now - this.lastSpawn > this.spawnInterval && this.generation < 5) {
+        this.spawnChild(now);
+      }
+
+      // Update children
+      this.children.forEach(c => c.update(now, t));
+    }
+
+    spawnChild(now) {
+      const childSize = this.size * (0.45 + Math.random() * 0.15);
+      if (childSize < 8) return; // too small
+
+      const child = new BananaNode(
+        this.x,
+        this.y,
+        childSize,
+        Math.random() * 360,
+        this.generation + 1,
+        this
+      );
+      this.children.push(child);
+      this.lastSpawn = now;
+    }
+
+    draw(ctx) {
+      if (!img.complete) return;
+
+      // Draw connection line to parent
+      if (this.parent && this.opacity > 0.1) {
+        ctx.save();
+        ctx.globalAlpha = this.opacity * 0.25;
+        ctx.strokeStyle = '#d4a012';
+        ctx.lineWidth = Math.max(1, this.size * 0.03);
+        ctx.beginPath();
+        ctx.moveTo(this.parent.x, this.parent.y);
+        ctx.lineTo(this.x, this.y);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Draw banana
+      ctx.save();
+      ctx.globalAlpha = this.opacity * (this.generation === 0 ? 1 : 0.7 + 0.3 / this.generation);
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angle * Math.PI / 180);
+      const s = this.size;
+      ctx.drawImage(img, -s / 2, -s / 2, s, s);
+      ctx.restore();
+
+      // Draw children (on top)
+      this.children.forEach(c => c.draw(ctx));
+    }
+
+    count() {
+      return 1 + this.children.reduce((sum, c) => sum + c.count(), 0);
+    }
+  }
+
+  img.onload = function() {
+    // Single banana, center of screen
+    root = new BananaNode(w / 2, h / 2, 160, -15, 0, null);
+    requestAnimationFrame(frame);
+  };
+
+  function frame(t) {
+    requestAnimationFrame(frame);
+    if (!root) return;
+
+    const now = performance.now();
+    ctx.clearRect(0, 0, w, h);
+
+    root.update(now, t);
+    root.draw(ctx);
+
+    // Counter
+    const total = root.count();
+    ctx.save();
+    ctx.font = '11px "Space Mono", monospace';
+    ctx.letterSpacing = '2px';
+    ctx.fillStyle = 'rgba(0,0,0,0.15)';
+    ctx.textAlign = 'center';
+    ctx.fillText(total === 1 ? '1 banana' : total + ' bananas', w / 2, h - 30);
+    ctx.restore();
+  }
+})();
+</script>
+</body>
+</html>

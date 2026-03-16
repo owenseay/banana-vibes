@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About — Banana Vibes</title>
+  <meta name="author" content="Owen Seay" />
+  <meta name="copyright" content="© 2024 Owen Seay. All rights reserved." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bananavibes.lol/fridge.html" />
+  <meta property="og:title" content="About — Banana Vibes" />
+  <meta property="og:description" content="Meet the chief banana." />
+  <meta property="og:image" content="https://bananavibes.lol/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="About — Banana Vibes" />
+  <meta name="twitter:description" content="Meet the chief banana." />
+  <meta name="twitter:image" content="https://bananavibes.lol/og-image.png" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #fffdf5;
+      color: #1a1a1a;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 80px 24px 0;
+      overflow-x: hidden;
+    }
+
+    .video-wrap, .photo-grid, .page-footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    .video-wrap {
+      width: 100%;
+      max-width: 640px;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    }
+
+    .video-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .photo-grid {
+      display: flex;
+      gap: 16px;
+      margin-top: 40px;
+      max-width: 640px;
+      width: 100%;
+      align-items: flex-start;
+    }
+
+    .photo-grid .col-left {
+      flex: 3;
+    }
+
+    .photo-grid .col-right {
+      flex: 4;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .photo-grid .photo-frame {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .photo-grid .photo-frame:hover {
+      transform: scale(1.02);
+      box-shadow: 0 12px 50px rgba(0,0,0,0.12);
+    }
+
+    .photo-grid .photo-frame img {
+      width: 100%;
+      display: block;
+    }
+
+    .ghost-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page-footer {
+      padding: 120px 24px 80px;
+      text-align: center;
+      background: linear-gradient(to bottom, #fffdf5 0%, #ffffff 30%);
+      align-self: stretch;
+      margin-left: -24px;
+      margin-right: -24px;
+      margin-top: auto;
+    }
+
+    .footer-tagline {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: rgba(0,0,0,0.25);
+    }
+
+    .footer-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: rgba(0,0,0,0.25);
+      margin-top: 12px;
+      text-transform: uppercase;
+    }
+
+    .footer-links {
+      margin-top: 16px;
+    }
+
+    .footer-links a,
+    .footer-links a:link,
+    .footer-links a:visited {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: rgba(0,0,0,0.25);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: rgba(0,0,0,0.5);
+    }
+
+    .footer-dot {
+      color: rgba(0,0,0,0.15);
+      margin: 0 8px;
+    }
+  </style>
+</head>
+<body>
+
+<canvas class="ghost-canvas" id="ghost-canvas"></canvas>
+
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/bgaBzjs7nOU" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+
+  <div class="photo-grid">
+    <div class="col-left">
+      <div class="photo-frame"><img src="framed-banana.webp" alt="Owen in a banana suit pointing at a framed banana painting" /></div>
+    </div>
+    <div class="col-right">
+      <div class="photo-frame"><img src="OG-fridge-banana.webp" alt="Owen in a banana suit pointing at the original banana on the fridge" /></div>
+      <div class="photo-frame" style="position: relative;">
+        <img src="owens_banana.webp" alt="The original watercolor banana cut out of paper with a real Dole sticker" oncontextmenu="return false" draggable="false" style="-webkit-user-select: none; user-select: none;" />
+        <span style="position: absolute; bottom: 12px; right: 14px; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); pointer-events: none; text-transform: uppercase;">banana vibes</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <p class="footer-tagline">This is bananas.</p>
+    <p class="footer-links"><a href="index.html">← vibes</a> <span class="footer-dot">·</span> <a href="technical.html">peel →</a></p>
+  </div>
+
+<script>
+(function() {
+  const canvas = document.getElementById('ghost-canvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+
+  let w, h;
+  function resize() {
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const img = new Image();
+  img.src = 'banana.png';
+
+  const b = {
+    x: Math.random() * w,
+    y: Math.random() * h,
+    size: 280,
+    heading: Math.random() * Math.PI * 2,
+    speed: 0.06,
+    turnRate: 0.15,
+    turnFreq: 0.04,
+    turnPhase: Math.random() * Math.PI * 2,
+    spinRate: 0.015,
+    angle: Math.random() * Math.PI * 2,
+    opacity: 0.12
+  };
+
+  function loop(t) {
+    ctx.clearRect(0, 0, w, h);
+    if (!img.complete) { requestAnimationFrame(loop); return; }
+
+    const time = t * 0.001;
+    b.heading += Math.sin(time * b.turnFreq + b.turnPhase) * b.turnRate * 0.016;
+    b.x += Math.cos(b.heading) * b.speed;
+    b.y += Math.sin(b.heading) * b.speed;
+    b.angle += b.spinRate * 0.016;
+
+    // toroidal wrap
+    if (b.x < -b.size) b.x = w + b.size;
+    if (b.x > w + b.size) b.x = -b.size;
+    if (b.y < -b.size) b.y = h + b.size;
+    if (b.y > h + b.size) b.y = -b.size;
+
+    ctx.save();
+    ctx.globalAlpha = b.opacity;
+    ctx.translate(b.x, b.y);
+    ctx.rotate(b.angle);
+    ctx.drawImage(img, -b.size / 2, -b.size / 2, b.size, b.size);
+    ctx.restore();
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+
+</body>
+</html>
