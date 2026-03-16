@@ -13,7 +13,7 @@ function resizeCanvas() {
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
   ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'high';
+  ctx.imageSmoothingQuality = 'medium';
   WAVE_K = (WAVE_CYCLES * Math.PI * 2) / canvas.width; // safe now
 }
 resizeCanvas();
