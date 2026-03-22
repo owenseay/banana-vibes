@@ -469,8 +469,7 @@
     }
 
     .hero-hand-img {
-      width: 240px;
-      max-width: 45vw;
+      width: clamp(200px, 32vw, 280px);
       display: block;
       margin: 36px auto 0;
     }
@@ -515,7 +514,7 @@
 
     @media (max-width: 640px) {
       .hero-banana-card { gap: 24px; margin-top: 32px; }
-      .hero-hand-img { width: 160px; }
+      .hero-hand-img { width: clamp(160px, 40vw, 240px); }
       .placard { padding: 24px 24px; }
     }
 
@@ -645,7 +644,7 @@
     <h2 class="level-title reveal reveal-d1">Drift</h2>
     <p class="level-desc reveal reveal-d2">
       Suspended in mid-air. Each banana floats on its own sinusoidal path,
-      gently rocking, answering to no one. <em>Quiet. Meditative. Completely unnecessary.</em>
+      gently rocking, answering to precisely no one. <em>Quiet. Ambient. Entirely unnecessary.</em>
     </p>
     <div class="stat-row reveal reveal-d3">
       <div class="stat"><div class="stat-val">247</div><div class="stat-label">Bananas</div></div>
