@@ -30,7 +30,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fredoka:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #fffdf5;
@@ -83,7 +83,7 @@
     }
 
     .cover-title {
-      font-family: 'Fredoka', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: clamp(48px, 8vw, 80px);
       font-weight: 700;
       color: var(--ink);
@@ -103,9 +103,10 @@
     }
 
     .cover-author {
-      font-size: 15px;
-      color: var(--gray);
-      margin-top: 40px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: rgba(0,0,0,0.18);
+      margin-top: 8px;
     }
 
     .cover-divider {
@@ -145,13 +146,15 @@
     }
 
     h2 {
-      font-family: 'Fredoka', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 48px;
       font-weight: 700;
       margin: 80px 0 24px;
       padding-top: 4px;
       color: var(--ink);
       line-height: 1.3;
+      letter-spacing: 2px;
+      text-transform: uppercase;
       overflow: visible;
     }
 
@@ -166,7 +169,7 @@
     }
 
     h3 {
-      font-family: 'Fredoka', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 22px;
       font-weight: 600;
       margin: 40px 0 12px;
@@ -217,7 +220,7 @@
     }
 
     .qa-q {
-      font-family: 'Fredoka', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       font-size: 18px;
       font-weight: 600;
       color: var(--banana-deep);
@@ -374,7 +377,7 @@
   </h1>
   <p class="cover-subtitle">A Technical Companion</p>
   <div class="cover-divider"></div>
-  <p class="cover-author">Owen Seay</p>
+  <p class="cover-author"><a href="https://owenseay.com" style="color: rgba(0,0,0,0.18); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='rgba(0,0,0,0.4)'" onmouseout="this.style.color='rgba(0,0,0,0.18)'">Owen Seay</a></p>
 </div>
 
 <!-- ============================================
@@ -714,7 +717,7 @@
 
   <div class="qa">
     <p class="qa-q">How does the bounce physics work?</p>
-    <p class="qa-a">Bounce is the only vibe that simulates real physics. Every other vibe is purely mathematical: sine waves, scaling, heading rotation. Bounce has gravity, velocity, and collision. Every banana sits on the ground until its <span class="mono">popDelay</span> timer expires (staggered 0–5 seconds so they don't all launch at once). Once it pops, gravity takes over. Each frame, <span class="mono">gravity</span> gets added to the banana's vertical velocity, pulling it down. When it hits the floor, its vertical velocity gets reversed and set to its current <span class="mono">bounceEnergy</span> value, launching it back up.</p>
+    <p class="qa-a">Bounce has gravity, velocity, and collision. Every banana sits on the ground until its <span class="mono">popDelay</span> timer expires (staggered 0–5 seconds so they don't all launch at once). Once it pops, gravity takes over. Each frame, <span class="mono">gravity</span> gets added to the banana's vertical velocity, pulling it down. When it hits the floor, its vertical velocity gets reversed and set to its current <span class="mono">bounceEnergy</span> value, launching it back up.</p>
     <p class="qa-a">The key detail is that <span class="mono">bounceEnergy</span> increases with every bounce. Each landing adds a small amount of energy (+0.3–0.6 for regular bananas, +1.2–1.7 for heroes), so the bananas gradually bounce higher and higher until they cap out at <span class="mono">maxBounceEnergy</span>. They're not losing energy on each bounce like a real ball would. They're gaining it. Every landing is fuel for the next jump.</p>
     <p class="qa-a">Wall collisions just reverse horizontal velocity with a multiplier. Regular bananas lose half their speed on impact (×-0.5), so they tend to stay in their lane. Heroes barely lose anything (×-0.9), so they ricochet around the full width of the screen.</p>
   </div>
@@ -923,13 +926,13 @@
     const bananas = [];
 
     function reset() {
-      const rect = canvas.parentElement.getBoundingClientRect();
+      const rect = canvas.getBoundingClientRect();
       canvas.width = rect.width * devicePixelRatio;
-      canvas.height = 220 * devicePixelRatio;
+      canvas.height = rect.height * devicePixelRatio;
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
       ctx.scale(devicePixelRatio, devicePixelRatio);
-      const w = rect.width, h = 220;
+      const w = rect.width, h = rect.height;
       bananas.length = 0;
       for (let i = 0; i < count; i++) {
         const b = initFn(w, h);
