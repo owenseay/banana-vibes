@@ -183,6 +183,13 @@
       transform: rotate(45deg);
     }
 
+    .scroll-cue.section-scroll .chevron {
+      width: 26px;
+      height: 26px;
+      border-right: 3px solid rgba(0,0,0,0.55);
+      border-bottom: 3px solid rgba(0,0,0,0.55);
+    }
+
     @keyframes bob {
       0%, 100% { bottom: 28px; opacity: 0.5; }
       50% { bottom: 20px; opacity: 1; }
@@ -588,6 +595,13 @@
       .interlude { padding: 80px 20px; }
       .level-overlay { padding: 32px 20px; }
       .story-sticker { height: 2.2em; margin: -0.7em 2px -0.4em 4px; top: -3px; }
+      .scroll-cue.section-scroll .chevron {
+        width: 20px;
+        height: 20px;
+        border-right-width: 2.5px;
+        border-bottom-width: 2.5px;
+      }
+      .scroll-cue.section-scroll { bottom: 18px; }
     }
   </style>
 </head>
@@ -644,13 +658,16 @@
     <h2 class="level-title reveal reveal-d1">Drift</h2>
     <p class="level-desc reveal reveal-d2">
       Suspended in mid-air. Each banana floats on its own sinusoidal path,
-      gently rocking, answering to precisely no one. <em>Quiet. Ambient. Completely unnecessary.</em>
+      gently rocking, beholden to no one. <em>Quiet. Ambient. Completely unnecessary.</em>
     </p>
     <div class="stat-row reveal reveal-d3">
       <div class="stat"><div class="stat-val">247</div><div class="stat-label">Bananas</div></div>
       <div class="stat"><div class="stat-val">&infin;</div><div class="stat-label">Duration</div></div>
       <div class="stat"><div class="stat-val">0</div><div class="stat-label">Purpose</div></div>
     </div>
+  </div>
+  <div class="scroll-cue section-scroll">
+    <div class="chevron"></div>
   </div>
 </section>
 
@@ -673,6 +690,9 @@
       <div class="stat"><div class="stat-val">&plusmn;0.2&deg;</div><div class="stat-label">Tumble</div></div>
     </div>
   </div>
+  <div class="scroll-cue section-scroll">
+    <div class="chevron"></div>
+  </div>
 </section>
 
 <!-- ================================================================
@@ -694,6 +714,9 @@
       <div class="stat"><div class="stat-val">20%</div><div class="stat-label">Constant Spinners</div></div>
     </div>
   </div>
+  <div class="scroll-cue section-scroll">
+    <div class="chevron"></div>
+  </div>
 </section>
 
 <!-- ================================================================
@@ -713,6 +736,9 @@
       <div class="stat"><div class="stat-val">10px</div><div class="stat-label">Noise Range</div></div>
       <div class="stat"><div class="stat-val">100%</div><div class="stat-label">Restless</div></div>
     </div>
+  </div>
+  <div class="scroll-cue section-scroll">
+    <div class="chevron"></div>
   </div>
 </section>
 
@@ -735,6 +761,9 @@
       <div class="stat"><div class="stat-val">2</div><div class="stat-label">Axes</div></div>
     </div>
   </div>
+  <div class="scroll-cue section-scroll">
+    <div class="chevron"></div>
+  </div>
 </section>
 
 
@@ -756,6 +785,9 @@
       <div class="stat"><div class="stat-val">0.96</div><div class="stat-label">Gust Decay</div></div>
       <div class="stat"><div class="stat-val">&plusmn;40&deg;</div><div class="stat-label">Swing Limit</div></div>
     </div>
+  </div>
+  <div class="scroll-cue section-scroll">
+    <div class="chevron"></div>
   </div>
 </section>
 
@@ -1306,6 +1338,28 @@
     }
   })();
 
+  // ---- Section scroll cues: click to smooth-scroll to next section ----
+  document.querySelectorAll('.scroll-cue.section-scroll').forEach(cue => {
+    cue.style.cursor = 'pointer';
+    cue.addEventListener('click', () => {
+      const currentSection = cue.closest('.level');
+      const allSections = Array.from(document.querySelectorAll('.level'));
+      const idx = allSections.indexOf(currentSection);
+      const nextSection = allSections[idx + 1];
+      if (!nextSection) return;
+      const start = window.scrollY;
+      const target = nextSection.offsetTop;
+      const duration = 900;
+      const t0 = performance.now();
+      function tick(now) {
+        const t = Math.min((now - t0) / duration, 1);
+        const ease = 0.5 - 0.5 * Math.cos(t * Math.PI);
+        window.scrollTo(0, start + (target - start) * ease);
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  });
 
 })();
 </script>
